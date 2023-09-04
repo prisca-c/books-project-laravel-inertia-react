@@ -3,6 +3,14 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Edition;
+use App\Models\Library;
+use App\Models\Publisher;
+use App\Models\Rating;
+use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +20,89 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        User::factory()->create([
+            'username' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('password'),
+            'email_verified_at' => now(),
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory(10)->create();
+
+        Edition::factory(5)->create();
+
+        Rating::factory()->createMany([
+            [
+                'user_id' => 1,
+                'book_id' => 1,
+                'rating' => 5,
+            ],
+            [
+                'user_id' => 2,
+                'book_id' => 2,
+                'rating' => 4,
+            ],
+            [
+                'user_id' => 2,
+                'book_id' => 3,
+                'rating' => 3,
+            ],
+            [
+                'user_id' => 3,
+                'book_id' => 4,
+                'rating' => 2,
+            ],
+            [
+                'user_id' => 4,
+                'book_id' => 5,
+                'rating' => 1,
+            ],
+        ]);
+
+        Library::factory()->createMany([
+            [
+                'user_id' => 1,
+                'edition_id' => 1,
+            ],
+            [
+                'user_id' => 2,
+                'edition_id' => 2,
+            ],
+            [
+                'user_id' => 2,
+                'edition_id' => 3,
+            ],
+            [
+                'user_id' => 3,
+                'edition_id' => 4,
+            ],
+            [
+                'user_id' => 4,
+                'edition_id' => 5,
+            ],
+        ]);
+
+        Wishlist::factory()->createMany([
+            [
+                'user_id' => 1,
+                'edition_id' => 1,
+            ],
+            [
+                'user_id' => 2,
+                'edition_id' => 2,
+            ],
+            [
+                'user_id' => 2,
+                'edition_id' => 3,
+            ],
+            [
+                'user_id' => 3,
+                'edition_id' => 4,
+            ],
+            [
+                'user_id' => 4,
+                'edition_id' => 5,
+            ],
+        ]);
     }
 }
