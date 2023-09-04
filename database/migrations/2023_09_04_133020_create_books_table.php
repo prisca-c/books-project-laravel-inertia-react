@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('author_id')->constrained();
             $table->foreignId('publisher_id')->constrained();
-            $table->string('synopsis');
+            $table->longText('synopsis');
             $table->year('published_at');
             $table->timestamps();
         });

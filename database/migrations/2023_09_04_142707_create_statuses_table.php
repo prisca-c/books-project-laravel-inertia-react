@@ -16,6 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        DB::table('statuses')->insert([
+            ['name' => 'to read'],
+            ['name' => 'reading'],
+            ['name' => 'read'],
+        ]);
     }
 
     /**
