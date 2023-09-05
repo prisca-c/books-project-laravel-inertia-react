@@ -14,7 +14,7 @@ class Edition extends Model
         'book_id',
         'format',
         'description',
-        'image',
+        'cover',
         'published_at',
     ];
 

@@ -20,7 +20,7 @@ class EditionFactory extends Factory
             'book_id' => BookFactory::new(),
             'format' => $this->faker->randomElement(['hardcover', 'paperback', 'ebook']),
             'description' => $this->faker->paragraph,
-            'image' => $this->faker->imageUrl(),
+            'cover' => $this->faker->imageUrl(),
             'published_at' => $this->faker->year,
         ];
     }
