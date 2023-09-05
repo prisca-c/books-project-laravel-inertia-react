@@ -12,6 +12,7 @@ use App\Models\Rating;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +24,8 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'username' => 'admin',
             'email' => 'admin@admin.com',
-            'password' => bcrypt('password'),
+            'role_id' => 3, // 'admin'
+            'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
 
