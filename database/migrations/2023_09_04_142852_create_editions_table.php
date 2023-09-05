@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('book_id')->constrained()->cascadeOnDelete();
             $table->string('format');
             $table->string('description')->nullable();
-            $table->string('image')->nullable();
+            $table->string('cover')->nullable();
             $table->year('published_at');
             $table->timestamps();
         });
