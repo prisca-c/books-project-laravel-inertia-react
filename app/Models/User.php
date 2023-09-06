@@ -23,6 +23,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -60,8 +61,8 @@ class User extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 
-    public function roles(): BelongsToMany
+    public function role(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->belongsToMany(Role::class);
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 }
