@@ -41,8 +41,8 @@ export default function Authenticated({
               {user.role_id === 3 && (
                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <NavLink
-                    href={route('dashboard.books')}
-                    active={route().current('dashboard.books')}
+                    href={route('dashboard.books.index')}
+                    active={route().current('dashboard.books.index')}
                   >
                     Books
                   </NavLink>
