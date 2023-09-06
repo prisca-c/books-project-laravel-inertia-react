@@ -26,7 +26,7 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
       }
     >
       {auth && auth.user.role_id === 3 ? (
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto sm:px-6 lg:px-8">
           {showCreateBookModal && (
             <CreateBookModal setShow={setShowCreateBookModal} />
           )}
