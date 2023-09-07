@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublisherController;
 use App\Models\Book;
@@ -33,10 +34,6 @@ Route::get('/books', fn() => Inertia::render('Books', [
     'books' => (new BookController())->index(),
 ]))->name('public.books.index');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -44,10 +41,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'is_admin'])->group(fn () => [
-    Route::get('/dashboard/books', fn() => Inertia::render('Dashboard/DashboardBooks', [
-        'books' => (new BookController())->index(),
-    ]))->name('dashboard.books.index'),
-    Route::post('/dashboard/books', [BookController::class, 'store'])->name('dashboard.books.store'),
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/books', [DashboardController::class, 'books'])->name('dashboard.books.index');
+        Route::post('/books', [BookController::class, 'store'])->name('dashboard.books.store');
+        Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('dashboard.books.destroy');
+    }),
 ]);
 
 Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
