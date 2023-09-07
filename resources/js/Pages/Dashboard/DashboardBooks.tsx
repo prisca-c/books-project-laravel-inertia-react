@@ -8,6 +8,7 @@ import CreateBookModal from '@/Components/Modals/CreateBookModal';
 import { router } from '@inertiajs/react';
 import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
+import EditBookModal from '@/Components/Modals/EditBookModal';
 
 type DashboardBooksProps = {
   auth: PageProps['auth'];
@@ -16,11 +17,18 @@ type DashboardBooksProps = {
 
 const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
+  const [showEditBookModal, setShowEditBookModal] = useState(false);
+  const [editedBook, setEditedBook] = useState<BookType | null>(null);
 
   const onDelete = (id: number) => {
     router.delete(route('dashboard.books.destroy', id), {
       preserveScroll: true,
     });
+  };
+
+  const onEdit = (book: BookType | null) => {
+    setEditedBook(book);
+    setShowEditBookModal(true);
   };
 
   return (
@@ -37,6 +45,11 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
           {showCreateBookModal && (
             <CreateBookModal setShow={setShowCreateBookModal} />
           )}
+
+          {showEditBookModal && (
+            <EditBookModal setShow={setShowEditBookModal} book={editedBook} />
+          )}
+
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full fixed bottom-4 right-4"
             onClick={() => setShowCreateBookModal(true)}
@@ -70,6 +83,7 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
                         className={
                           'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
                         }
+                        onClick={() => onEdit(book)}
                       >
                         <FontAwesomeIcon icon={faPen} /> Edit
                       </button>
