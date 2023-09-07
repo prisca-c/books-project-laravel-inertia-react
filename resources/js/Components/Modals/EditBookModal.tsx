@@ -1,31 +1,38 @@
-import React from 'react';
-import { AuthorType } from '@/types/AuthorType';
-import { PublisherType } from '@/types/PublisherType';
+import React, { useEffect } from 'react';
+import { router } from '@inertiajs/react';
+import useFormBook from '@/Hooks/useFormBook';
+import InputError from '@/Components/InputError';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import InputError from '@/Components/InputError';
-import useFormBook from '@/Hooks/useFormBook';
+import type { BookType } from '@/types/BookType';
+import type { AuthorType } from '@/types/AuthorType';
+import type { PublisherType } from '@/types/PublisherType';
 
-type CreateBookModalProps = {
+type EditBookModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  book: BookType | null;
 };
 
-const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
-  const {
-    authors,
-    publishers,
-    data,
-    setData,
-    post,
-    processing,
-    errors,
-    reset,
-  } = useFormBook();
+const EditBookModal = ({ setShow, book }: any) => {
+  const { authors, publishers, data, setData, processing, errors, reset } =
+    useFormBook();
+
+  useEffect(() => {
+    setData({
+      title: book?.title,
+      author_id: book?.author_id,
+      publisher_id: book?.publisher_id,
+      published_at: book?.published_at,
+      synopsis: book?.synopsis,
+    });
+  }, [book]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      post(route('dashboard.books.store'));
+      router.put(route('dashboard.books.update', book.id), data, {
+        preserveScroll: true,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +45,7 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
         className={'relative w-[90vw] md:w-[70vw] bg-white p-4 rounded-lg'}
       >
         <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-center">Add Book</h1>
+          <h1 className="text-2xl font-bold text-center">Edit Book</h1>
           <div className="flex flex-col gap-2">
             <label htmlFor="title">Title</label>
             <input
@@ -146,4 +153,4 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
   );
 };
 
-export default CreateBookModal;
+export default EditBookModal;

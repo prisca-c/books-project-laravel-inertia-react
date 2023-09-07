@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class BookController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Book[]|Collection
+     */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::orderBy('id')->get();
 
         $books->load('author', 'publisher');
 
@@ -25,12 +32,14 @@ class BookController extends Controller
         return $books;
     }
 
-    public function show(Book $book)
+    public function show()
     {
+        $book = Book::find(request()->route('book'));
+
         $book->load('author', 'publisher', 'editions');
 
         $book->editions->each(function ($edition) {
-            $edition->library_count = $edition->libraries->count();
+            $edition->library_count = $edition->libraries()->count();
         });
 
         return Inertia::render('Books', [
@@ -45,6 +54,7 @@ class BookController extends Controller
             'author_id' => 'required',
             'publisher_id' => 'required',
             'published_at' => 'required|date_format:Y',
+            'synopsis' => 'required',
         ]);
 
         $book =  new Book();
@@ -60,15 +70,17 @@ class BookController extends Controller
         return redirect()->route('dashboard.books.index');
     }
 
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'title' => 'required',
-            'author_id' => 'required',
-            'publisher_id' => 'required',
+            'author_id' => 'required|exists:authors,id',
+            'publisher_id' => 'required|exists:publishers,id',
             'published_at' => 'required|date_format:Y',
             'synopsis' => 'required',
         ]);
+
+        $book = Book::findOrFail($id);
 
         $book->title = $request->title;
         $book->author_id = $request->author_id;
@@ -76,13 +88,17 @@ class BookController extends Controller
         $book->synopsis = $request->synopsis;
         $book->published_at = $request->published_at;
 
-        return redirect()->route('dashboard.books.index');
+        $book->save();
+
+        return Redirect::route('dashboard.books.index');
     }
 
-    public function destroy(Book $book)
+    public function destroy(Request $request, $id)
     {
+        $book = Book::findOrFail($id);
+
         $book->delete();
 
-        return redirect()->route('dashboard.books.index');
+        return Redirect::route('dashboard.books.index');
     }
 }
