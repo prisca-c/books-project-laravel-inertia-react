@@ -41,7 +41,7 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+    <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
       <form onSubmit={onSubmit} className={'relative bg-white p-4 rounded-lg'}>
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold text-center">Add Book</h1>

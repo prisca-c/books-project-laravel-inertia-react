@@ -1,12 +1,13 @@
-import { PageProps } from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { BookType } from '@/types/BookType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Book } from '@/Components/Books/Book';
 import Unauthorized from '@/Components/Unauthorized';
 import { useState } from 'react';
 import CreateBookModal from '@/Components/Modals/CreateBookModal';
+import { router } from '@inertiajs/react';
+import type { PageProps } from '@/types';
+import type { BookType } from '@/types/BookType';
 
 type DashboardBooksProps = {
   auth: PageProps['auth'];
@@ -15,6 +16,12 @@ type DashboardBooksProps = {
 
 const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
+
+  const onDelete = (id: number) => {
+    router.delete(route('dashboard.books.destroy', id), {
+      preserveScroll: true,
+    });
+  };
 
   return (
     <AuthenticatedLayout
@@ -26,7 +33,7 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
       }
     >
       {auth && auth.user.role_id === 3 ? (
-        <div className="relative max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           {showCreateBookModal && (
             <CreateBookModal setShow={setShowCreateBookModal} />
           )}
@@ -52,6 +59,7 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
                         className={
                           'text-red-500 hover:text-red-700 hover:bg-red-100 px-2'
                         }
+                        onClick={() => onDelete(book.id)}
                       >
                         <FontAwesomeIcon icon={faClose} /> Delete
                       </button>
