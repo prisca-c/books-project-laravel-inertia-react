@@ -1,35 +1,26 @@
-import { useForm } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { AuthorType } from '@/types/AuthorType';
 import { PublisherType } from '@/types/PublisherType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import InputError from '@/Components/InputError';
+import useFormBook from '@/Hooks/useFormBook';
 
 type CreateBookModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
-  const [authors, setAuthors] = useState([]);
-  const [publishers, setPublishers] = useState([]);
-  const { data, setData, post, processing, errors, reset } = useForm({
-    title: '',
-    author_id: '',
-    publisher_id: '',
-    published_at: '',
-    synopsis: '',
-  });
-
-  useEffect(() => {
-    axios.get(route('authors.index')).then((response) => {
-      setAuthors(response.data);
-    });
-    axios.get(route('publishers.index')).then((response) => {
-      setPublishers(response.data);
-    });
-  }, []);
+  const {
+    authors,
+    publishers,
+    data,
+    setData,
+    post,
+    processing,
+    errors,
+    reset,
+  } = useFormBook();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,8 +32,11 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-      <form onSubmit={onSubmit} className={'relative bg-white p-4 rounded-lg'}>
+    <div className="fixed z-10 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <form
+        onSubmit={onSubmit}
+        className={'relative w-[90vw] md:w-[70vw] bg-white p-4 rounded-lg'}
+      >
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold text-center">Add Book</h1>
           <div className="flex flex-col gap-2">
