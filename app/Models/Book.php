@@ -13,15 +13,12 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'title',
         'author_id',
         'publisher_id',
         'synopsis',
         'published_at',
-    ];
-
-    protected $casts = [
-        'published_at' => 'date:Y',
     ];
 
     public function author(): BelongsTo
