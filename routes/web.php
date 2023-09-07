@@ -41,11 +41,18 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'is_admin'])->group(fn () => [
+    // -- Dashboard --
     Route::group(['prefix' => 'dashboard'], function () {
+        // -- Index --
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/books', [DashboardController::class, 'books'])->name('dashboard.books.index');
-        Route::post('/books', [BookController::class, 'store'])->name('dashboard.books.store');
-        Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('dashboard.books.destroy');
+
+        // -- Books --
+        Route::group(['prefix' => 'books'] , function () {
+            Route::get('/', [DashboardController::class, 'books'])->name('dashboard.books.index');
+            Route::post('/', [BookController::class, 'store'])->name('dashboard.books.store');
+            Route::delete('/{id}', [BookController::class, 'destroy'])->name('dashboard.books.destroy');
+            Route::put('/{id}', [BookController::class, 'update'])->name('dashboard.books.update');
+        });
     }),
 ]);
 
