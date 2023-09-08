@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,10 @@ class Book extends Model
         'publisher_id',
         'synopsis',
         'published_at',
+    ];
+
+    protected $appends = [
+        'cover',
     ];
 
     public function author(): BelongsTo
@@ -44,5 +49,18 @@ class Book extends Model
     public function editions(): HasMany
     {
         return $this->hasMany(Edition::class);
+    }
+
+    public function cover(): Attribute
+    {
+        if ($this->editions->count() > 0) {
+            $path = $this->editions->first()->cover_url;
+        } else {
+            $path = 'https://via.placeholder.com/150';
+        }
+
+        return new Attribute(
+            get: fn () => $path,
+        );
     }
 }
