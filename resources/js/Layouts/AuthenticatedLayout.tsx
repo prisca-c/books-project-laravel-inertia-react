@@ -13,9 +13,6 @@ export default function Authenticated({
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
-  useEffect(() => {
-    console.log(user);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -38,16 +35,14 @@ export default function Authenticated({
                 </NavLink>
               </div>
 
-              {user.role_id === 3 && (
-                <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                  <NavLink
-                    href={route('dashboard.books.index')}
-                    active={route().current('dashboard.books.index')}
-                  >
-                    Books
-                  </NavLink>
-                </div>
-              )}
+              <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <NavLink
+                  href={route('dashboard.books.index')}
+                  active={route().current('dashboard.books.index')}
+                >
+                  Books
+                </NavLink>
+              </div>
             </div>
 
             <div className="hidden sm:flex sm:items-center sm:ml-6">

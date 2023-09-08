@@ -26,7 +26,9 @@ const DashboardBookSingle = ({ auth, book }: DashboardBookSingleProps) => {
       header={
         <h2 className="font-semibold text-xl text-gray-400 leading-tight">
           <Link href={route('dashboard.books.index')}>Books</Link> &gt;{' '}
-          <span className="text-gray-800">{book.title}</span>
+          <span className="text-gray-800">
+            {book.title.substring(0, 25)}...
+          </span>
         </h2>
       }
     >
@@ -75,7 +77,10 @@ const DashboardBookSingle = ({ auth, book }: DashboardBookSingleProps) => {
                   )}
                 </p>
                 <img src={edition?.cover || book.cover} alt={book.title} />
-                <p className="mt-1 text-sm text-gray-500">{book.synopsis}</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Synopsis :<br />
+                  <b>{book.synopsis}</b>
+                </p>
               </div>
             ) : (
               <p className="text-lg text-center leading-6 font-medium text-gray-900">

@@ -62,44 +62,42 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4">
           {books &&
             books.map((book) => (
-              <Link
-                href={route('dashboard.books.single', book.id)}
+              <div
+                className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2"
                 key={book.id}
               >
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
+                <Link href={route('dashboard.books.single', book.id)}>
                   <Book book={book} />
+                </Link>
 
-                  {isAdmin && (
-                    <div
-                      className={
-                        'flex justify-end items-center gap-4 mt-4 px-2'
-                      }
-                    >
-                      <div className={'flex justify-center items-center'}>
-                        <button
-                          className={
-                            'text-red-500 hover:text-red-700 hover:bg-red-100 px-2'
-                          }
-                          onClick={() => onDelete(book.id)}
-                        >
-                          <FontAwesomeIcon icon={faClose} /> Delete
-                        </button>
-                      </div>
-
-                      <div className={'flex justify-center items-center'}>
-                        <button
-                          className={
-                            'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
-                          }
-                          onClick={() => onEdit(book)}
-                        >
-                          <FontAwesomeIcon icon={faPen} /> Edit
-                        </button>
-                      </div>
+                {isAdmin && (
+                  <div
+                    className={'flex justify-end items-center gap-4 mt-4 px-2'}
+                  >
+                    <div className={'flex justify-center items-center'}>
+                      <button
+                        className={
+                          'text-red-500 hover:text-red-700 hover:bg-red-100 px-2'
+                        }
+                        onClick={() => onDelete(book.id)}
+                      >
+                        <FontAwesomeIcon icon={faClose} /> Delete
+                      </button>
                     </div>
-                  )}
-                </div>
-              </Link>
+
+                    <div className={'flex justify-center items-center'}>
+                      <button
+                        className={
+                          'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
+                        }
+                        onClick={() => onEdit(book)}
+                      >
+                        <FontAwesomeIcon icon={faPen} /> Edit
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
         </div>
       </div>
