@@ -38,7 +38,11 @@ class BookController extends Controller
 
         $book->load('author', 'publisher', 'editions');
 
-        $book->cover = $book->editions->first()->cover;
+        if ($book->editions->count() > 0) {
+            $book->cover = $book->editions->first()->cover;
+        } else {
+            $book->cover = 'https://via.placeholder.com/150';
+        }
 
         return $book;
     }
