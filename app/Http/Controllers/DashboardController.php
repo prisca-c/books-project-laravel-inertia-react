@@ -22,4 +22,13 @@ class DashboardController extends Controller
             'books' => $books,
         ]);
     }
+
+    public function bookSingle($id)
+    {
+        $book = (new BookController())->show($id);
+
+        return Inertia::render('Dashboard/DashboardBookSingle', [
+            'book' => $book,
+        ]);
+    }
 }
