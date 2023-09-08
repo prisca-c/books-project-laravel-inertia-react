@@ -31,7 +31,11 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
 
-        Edition::factory(5)->create();
+        Book::factory(10)->create();
+
+        Book::all()->each(function ($book) {
+            $book->editions()->saveMany(Edition::factory(3)->make());
+        });
 
         Rating::factory()->createMany([
             [

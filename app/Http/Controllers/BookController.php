@@ -32,19 +32,15 @@ class BookController extends Controller
         return $books;
     }
 
-    public function show()
+    public function show($id)
     {
-        $book = Book::find(request()->route('book'));
+        $book = Book::findOrFail($id);
 
         $book->load('author', 'publisher', 'editions');
 
-        $book->editions->each(function ($edition) {
-            $edition->library_count = $edition->libraries()->count();
-        });
+        $book->cover = $book->editions->first()->cover;
 
-        return Inertia::render('Books', [
-            'book' => $book,
-        ]);
+        return $book;
     }
 
     public function store(Request $request)

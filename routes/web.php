@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'is_admin'])->group(fn () => [
+Route::middleware(['auth', 'verified'])->group(fn () => [
     // -- Dashboard --
     Route::group(['prefix' => 'dashboard'], function () {
         // -- Index --
@@ -49,9 +49,11 @@ Route::middleware(['auth', 'verified', 'is_admin'])->group(fn () => [
         // -- Books --
         Route::group(['prefix' => 'books'] , function () {
             Route::get('/', [DashboardController::class, 'books'])->name('dashboard.books.index');
-            Route::post('/', [BookController::class, 'store'])->name('dashboard.books.store');
-            Route::delete('/{id}', [BookController::class, 'destroy'])->name('dashboard.books.destroy');
-            Route::put('/{id}', [BookController::class, 'update'])->name('dashboard.books.update');
+            Route::post('/', [BookController::class, 'store'])->name('dashboard.books.store')->middleware('is_admin');
+            Route::delete('/{id}', [BookController::class, 'destroy'])->name('dashboard.books.destroy')->middleware('is_admin');
+            Route::put('/{id}', [BookController::class, 'update'])->name('dashboard.books.update')->middleware('is_admin');
+
+            Route::get('/{id}', [DashboardController::class, 'bookSingle'])->name('dashboard.books.single');
         });
     }),
 ]);
