@@ -12,4 +12,7 @@ export type PageProps<
   auth: {
     user: User;
   };
+  errors: {
+    [key: string]: string[];
+  };
 };
