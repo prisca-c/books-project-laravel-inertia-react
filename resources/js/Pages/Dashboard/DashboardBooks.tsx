@@ -2,13 +2,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Book } from '@/Components/Books/Book';
-import Unauthorized from '@/Components/Unauthorized';
 import { useState } from 'react';
 import CreateBookModal from '@/Components/Modals/CreateBookModal';
-import { router } from '@inertiajs/react';
+import EditBookModal from '@/Components/Modals/EditBookModal';
+import { Link, router } from '@inertiajs/react';
 import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
-import EditBookModal from '@/Components/Modals/EditBookModal';
 
 type DashboardBooksProps = {
   auth: PageProps['auth'];
@@ -19,6 +18,8 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
   const [showEditBookModal, setShowEditBookModal] = useState(false);
   const [editedBook, setEditedBook] = useState<BookType | null>(null);
+
+  const isAdmin = auth && auth.user.role_id === 3;
 
   const onDelete = (id: number) => {
     router.delete(route('dashboard.books.destroy', id), {
@@ -40,62 +41,68 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
         </h2>
       }
     >
-      {auth && auth.user.role_id === 3 ? (
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          {showCreateBookModal && (
-            <CreateBookModal setShow={setShowCreateBookModal} />
-          )}
+      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        {isAdmin && (
+          <>
+            {showCreateBookModal && (
+              <CreateBookModal setShow={setShowCreateBookModal} />
+            )}
+            {showEditBookModal && (
+              <EditBookModal setShow={setShowEditBookModal} book={editedBook} />
+            )}
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full fixed bottom-4 right-4"
+              onClick={() => setShowCreateBookModal(true)}
+            >
+              <FontAwesomeIcon icon={faPlus} /> Add Book
+            </button>
+          </>
+        )}
 
-          {showEditBookModal && (
-            <EditBookModal setShow={setShowEditBookModal} book={editedBook} />
-          )}
-
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full fixed bottom-4 right-4"
-            onClick={() => setShowCreateBookModal(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} /> Add Book
-          </button>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4">
-            {books &&
-              books.map((book) => (
-                <div
-                  className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2"
-                  key={book.id}
-                >
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4">
+          {books &&
+            books.map((book) => (
+              <Link
+                href={route('dashboard.books.single', book.id)}
+                key={book.id}
+              >
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
                   <Book book={book} />
-                  <div
-                    className={'flex justify-end items-center gap-4 mt-4 px-2'}
-                  >
-                    <div className={'flex justify-center items-center'}>
-                      <button
-                        className={
-                          'text-red-500 hover:text-red-700 hover:bg-red-100 px-2'
-                        }
-                        onClick={() => onDelete(book.id)}
-                      >
-                        <FontAwesomeIcon icon={faClose} /> Delete
-                      </button>
-                    </div>
 
-                    <div className={'flex justify-center items-center'}>
-                      <button
-                        className={
-                          'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
-                        }
-                        onClick={() => onEdit(book)}
-                      >
-                        <FontAwesomeIcon icon={faPen} /> Edit
-                      </button>
+                  {isAdmin && (
+                    <div
+                      className={
+                        'flex justify-end items-center gap-4 mt-4 px-2'
+                      }
+                    >
+                      <div className={'flex justify-center items-center'}>
+                        <button
+                          className={
+                            'text-red-500 hover:text-red-700 hover:bg-red-100 px-2'
+                          }
+                          onClick={() => onDelete(book.id)}
+                        >
+                          <FontAwesomeIcon icon={faClose} /> Delete
+                        </button>
+                      </div>
+
+                      <div className={'flex justify-center items-center'}>
+                        <button
+                          className={
+                            'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
+                          }
+                          onClick={() => onEdit(book)}
+                        >
+                          <FontAwesomeIcon icon={faPen} /> Edit
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
-              ))}
-          </div>
+              </Link>
+            ))}
         </div>
-      ) : (
-        <Unauthorized />
-      )}
+      </div>
     </AuthenticatedLayout>
   );
 };
