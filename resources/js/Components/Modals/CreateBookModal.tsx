@@ -24,11 +24,12 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      post(route('dashboard.books.store'));
-    } catch (error) {
-      console.log(error);
-    }
+    post(route('dashboard.books.store'), {
+      preserveScroll: true,
+      onSuccess: () => {
+        setShow(false);
+      },
+    });
   };
 
   return (
