@@ -32,13 +32,13 @@ class EditionController extends Controller
         return Redirect::route('dashboard');
     }
 
-    private function save(Request $request, Edition $edition): \Illuminate\Http\RedirectResponse
+    private function save(Request $request, Edition $edition)
     {
         $request->validate([
             'book_id' => 'required|exists:books,id',
             'format' => 'required',
             'description' => 'required',
-            'cover' => 'image',
+            'cover' => 'nullable|image',
             'published_at' => 'required',
         ]);
 
@@ -57,13 +57,15 @@ class EditionController extends Controller
             $cover_path = $edition->cover;
         }
 
+
+        $edition->book_id = $request->input('book_id');
+        $edition->cover = $cover_path;
         $edition->format = $request->input('format');
         $edition->description = $request->input('description');
-        $edition->cover = $cover_path;
         $edition->published_at = $request->input('published_at');
 
         $edition->save();
 
-        return Redirect::route('dashboard');
+        return redirect()->route('dashboard.books.single', $edition->book_id);
     }
 }
