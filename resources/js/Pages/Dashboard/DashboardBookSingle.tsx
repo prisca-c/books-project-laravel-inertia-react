@@ -108,7 +108,11 @@ const DashboardBookSingle = ({
                     </>
                   )}
                 </p>
-                <img src={edition?.cover_url || book.cover} alt={book.title} />
+                <img
+                  src={edition?.cover_url || book.cover}
+                  alt={book.title}
+                  className={'w-[auto] h-[400px]'}
+                />
                 <p className="mt-1 text-sm text-gray-500">
                   Synopsis :<br />
                   <b>{book.synopsis}</b>
