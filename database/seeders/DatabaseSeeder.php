@@ -34,7 +34,11 @@ class DatabaseSeeder extends Seeder
         Book::factory(10)->create();
 
         Book::all()->each(function ($book) {
-            $book->editions()->saveMany(Edition::factory(3)->make());
+            $book->editions()->saveMany(Edition::factory(3)->make(
+                [
+                    'book_id' => $book->id,
+                ]
+            ));
         });
 
         Rating::factory()->createMany([

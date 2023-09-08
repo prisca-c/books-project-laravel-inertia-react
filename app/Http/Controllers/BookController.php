@@ -21,14 +21,6 @@ class BookController extends Controller
 
         $books->load('author', 'publisher');
 
-        $books->each(function ($book) {
-            if ($book->editions->count() > 0) {
-                $book->cover = $book->editions->first()->cover;
-            } else {
-                $book->cover = 'https://via.placeholder.com/150';
-            }
-        });
-
         return $books;
     }
 
@@ -37,8 +29,6 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
 
         $book->load('author', 'publisher', 'editions');
-
-        $book->cover = $book->editions->first()->cover;
 
         return $book;
     }
@@ -53,7 +43,7 @@ class BookController extends Controller
             'synopsis' => 'required',
         ]);
 
-        $book =  new Book();
+        $book = new Book();
 
         $book->title = $request->title;
         $book->author_id = $request->author_id;

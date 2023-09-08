@@ -4,5 +4,6 @@ export type EditionType = {
   format: string;
   published_at: string;
   cover: string;
+  cover_url: string;
   description: string;
 };

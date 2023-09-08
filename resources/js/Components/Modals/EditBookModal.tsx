@@ -14,7 +14,7 @@ type EditBookModalProps = {
 };
 
 const EditBookModal = ({ setShow, book }: any) => {
-  const { authors, publishers, data, setData, processing, errors, reset } =
+  const { authors, publishers, data, setData, processing, errors, reset, put } =
     useFormBook();
 
   useEffect(() => {
@@ -29,13 +29,12 @@ const EditBookModal = ({ setShow, book }: any) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      router.put(route('dashboard.books.update', book.id), data, {
-        preserveScroll: true,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    put(route('dashboard.books.update', book.id), {
+      preserveScroll: true,
+      onSuccess: () => {
+        setShow(false);
+      },
+    });
   };
 
   return (

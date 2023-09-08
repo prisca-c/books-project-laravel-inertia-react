@@ -17,7 +17,6 @@ class EditionFactory extends Factory
     public function definition(): array
     {
         return [
-            'book_id' => BookFactory::new(),
             'format' => $this->faker->randomElement(['hardcover', 'paperback', 'ebook']),
             'description' => $this->faker->paragraph,
             'cover' => $this->faker->imageUrl(),
