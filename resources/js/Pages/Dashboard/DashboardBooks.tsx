@@ -8,6 +8,7 @@ import EditBookModal from '@/Components/Modals/EditBookModal';
 import { Link, router } from '@inertiajs/react';
 import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
+import { Switch } from '@headlessui/react';
 
 type DashboardBooksProps = {
   auth: PageProps['auth'];
@@ -15,6 +16,7 @@ type DashboardBooksProps = {
 };
 
 const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
+  const [turnEdition, setTurnEdition] = useState(false);
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
   const [showEditBookModal, setShowEditBookModal] = useState(false);
   const [editedBook, setEditedBook] = useState<BookType | null>(null);
@@ -43,6 +45,27 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
     >
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         {isAdmin && (
+          <Switch.Group>
+            <div className="flex items-center mt-4">
+              <Switch.Label className="mr-4">Edition</Switch.Label>
+              <Switch
+                checked={turnEdition}
+                onChange={setTurnEdition}
+                className={`${
+                  turnEdition ? 'bg-blue-600' : 'bg-gray-200'
+                } relative inline-flex items-center h-6 rounded-full w-11`}
+              >
+                <span
+                  className={`${
+                    turnEdition ? 'translate-x-6' : 'translate-x-1'
+                  } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                />
+              </Switch>
+            </div>
+          </Switch.Group>
+        )}
+
+        {isAdmin && turnEdition && (
           <>
             {showCreateBookModal && (
               <CreateBookModal setShow={setShowCreateBookModal} />
