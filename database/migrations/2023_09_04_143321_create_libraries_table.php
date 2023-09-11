@@ -16,7 +16,7 @@ return new class extends Migration
             $table->longText('notes')->nullable();
             $table->foreignId('edition_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('status_id')->default(1)->constrained()->cascadeOnDelete();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('finished_at')->nullable();
             $table->timestamps();
