@@ -19,7 +19,7 @@ class BookController extends Controller
     {
         $books = Book::orderBy('id')->get();
 
-        $books->load('author', 'publisher');
+        $books->load('author', 'publisher', 'editions');
 
         return $books;
     }

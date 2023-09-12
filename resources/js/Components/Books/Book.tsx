@@ -26,7 +26,9 @@ export const Book = ({ book }: { book: BookType }) => {
         >
           <img src={book.cover} alt={book.title} className={'m-auto'} />
         </div>
-        <p className={'text-sm h-[100px] overflow-hidden'}>{book.synopsis}</p>
+        <p className={'text-start text-sm h-[100px] overflow-hidden'}>
+          {book.synopsis}
+        </p>
       </div>
     )
   );

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
@@ -26,6 +27,14 @@ class Book extends Model
 
     protected $appends = [
         'cover',
+    ];
+
+    protected $withCount = [
+        'editions',
+    ];
+
+    protected $with =[
+        'firstEdition',
     ];
 
     public function author(): BelongsTo
@@ -53,16 +62,19 @@ class Book extends Model
         return $this->hasMany(Edition::class);
     }
 
+    public function firstEdition(): HasOne
+    {
+        return $this->hasOne(Edition::class)->latestOfMany();
+    }
+
     public function cover(): Attribute
     {
-        if ($this->editions->count() > 0) {
-            $path = $this->editions->first()->cover_url;
-        } else {
-            $path = 'https://via.placeholder.com/150';
-        }
-
+        $path = $this->firstEdition
+            ? $this->firstEdition->cover_url
+            : 'https://via.placeholder.com/150';
         return new Attribute(
-            get: fn () => $path,
-        );
+            get: fn () => $path //$this->firstEdition?->cover_url ?? 'https://via.placeholder.com/150'
+
+    );
     }
 }

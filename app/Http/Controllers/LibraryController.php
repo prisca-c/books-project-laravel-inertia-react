@@ -3,34 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Library;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LibraryController extends Controller
 {
     public function index()
     {
-        return Library::where('user_id', \Auth::user()->id)->get()->load('edition.book.author', 'edition.book.publisher');
+        return Library::where('user_id', \Auth::user()->id)
+            ->with('edition.book.author', 'edition.book.publisher')
+            ->get();
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'edition_id' => 'required|exists:editions,id',
             'user_id' => 'required|exists:users,id',
-            'edition_id' => function ($attribute, $value, $fail) use ($request) {
-                $library = Library::where('edition_id', $value)
-                    ->where('user_id', $request->user_id)
-                    ->first();
+            'edition_id' => [
+                'required',
+                'exists:editions,id',
+                function ($attribute, $value, $fail) {
+                    $library = Library::where('edition_id', $value)
+                        ->where('user_id', request()->user_id)
+                        ->first();
 
-                if ($library) {
-                    $fail('This edition is already in your library.');
+                    if ($library) {
+                        $fail('This edition is already in your library.');
+                    }
                 }
-            },
+            ]
         ]);
 
         Library::create($request->all());
 
-        \Redirect::route('dashboard.books.index');
+        return \Redirect::route('dashboard.books.index');
     }
 
     public function update(Request $request, $id)
@@ -62,6 +68,15 @@ class LibraryController extends Controller
 
         $library->update($request->all());
 
-        return $library;
+        return \Redirect::route('dashboard.libraries.index');
+    }
+
+    public function destroy($id)
+    {
+        $library = Library::findOrFail($id);
+
+        $library->delete();
+
+        return \Redirect::route('dashboard.libraries.index');
     }
 }

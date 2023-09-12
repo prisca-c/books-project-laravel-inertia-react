@@ -15,6 +15,7 @@ import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
 import { Switch } from '@headlessui/react';
 import AddToLibraryModal from '@/Components/Modals/AddToLibraryModal';
+import EditionButtons from '@/Components/EditionButtons';
 
 type BooksProps = {
   auth: PageProps['auth'];
@@ -38,8 +39,7 @@ const Books = ({ auth, books }: BooksProps) => {
       return books;
     } else {
       return books.filter((book) => {
-        if (!book.editions) return false;
-        return book.editions.length > 0;
+        return book.editions_count > 0;
       });
     }
   };
@@ -150,31 +150,10 @@ const Books = ({ auth, books }: BooksProps) => {
                   </div>
                 )}
                 {isAdmin && turnEdition && (
-                  <div
-                    className={'flex justify-end items-center gap-4 mt-4 px-2'}
-                  >
-                    <div className={'flex justify-center items-center'}>
-                      <button
-                        className={
-                          'text-red-500 hover:text-red-700 hover:bg-red-100 px-2'
-                        }
-                        onClick={() => onDelete(book.id)}
-                      >
-                        <FontAwesomeIcon icon={faClose} /> Delete
-                      </button>
-                    </div>
-
-                    <div className={'flex justify-center items-center'}>
-                      <button
-                        className={
-                          'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
-                        }
-                        onClick={() => onEdit(book)}
-                      >
-                        <FontAwesomeIcon icon={faPen} /> Edit
-                      </button>
-                    </div>
-                  </div>
+                  <EditionButtons
+                    onEdit={() => onEdit(book)}
+                    onDelete={() => onDelete(book.id)}
+                  />
                 )}
               </div>
             ))}

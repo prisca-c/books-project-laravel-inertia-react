@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
     public function books()
     {
-        $books = (new BookController())->index();
+        $books = app(BookController::class)->index();
 
         return Inertia::render('Dashboard/Books', [
             'books' => $books,
@@ -25,7 +25,7 @@ class DashboardController extends Controller
 
     public function bookSingle($id)
     {
-        $book = (new BookController())->show($id);
+        $book = app(BookController::class)->show($id);
 
         return Inertia::render('Dashboard/BookSingle', [
             'book' => $book,
@@ -34,7 +34,7 @@ class DashboardController extends Controller
 
     public function libraries()
     {
-        $libraries = (new LibraryController())->index();
+        $libraries = app(LibraryController::class)->index();
 
         return Inertia::render('Dashboard/Libraries', [
             'libraries' => $libraries,
