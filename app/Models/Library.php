@@ -38,7 +38,7 @@ class Library extends Model
 
     public function edition(): BelongsTo
     {
-        return $this->belongsTo(Edition::class);
+        return $this->belongsTo(Edition::class)->withTrashed();
     }
 
     public function status(): Attribute
