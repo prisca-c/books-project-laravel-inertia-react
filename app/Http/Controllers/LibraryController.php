@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Library;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LibraryController extends Controller
 {
@@ -17,22 +19,23 @@ class LibraryController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $rules = [
             'user_id' => 'required|exists:users,id',
             'edition_id' => [
                 'required',
                 'exists:editions,id',
-                function ($attribute, $value, $fail) {
-                    $library = Library::where('edition_id', $value)
-                        ->where('user_id', request()->user_id)
-                        ->first();
-
-                    if ($library) {
-                        $fail('This edition is already in your library.');
-                    }
-                }
+                Rule::unique('libraries')
+                    ->where(fn (Builder $query) => $query
+                        ->where('user_id', $request->user_id)
+                    ),
             ]
-        ]);
+        ];
+
+        $customMessages = [
+            'edition_id.unique' => 'This edition is already in your library.',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
 
         Library::create($request->all());
 
