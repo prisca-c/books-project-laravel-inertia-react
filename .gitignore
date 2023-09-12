@@ -19,3 +19,7 @@ yarn-error.log
 /.vscode
 
 bootstrap/ssr/
+
+package.xml
+
+xdebug-3.2.2.tgz
