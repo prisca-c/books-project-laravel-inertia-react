@@ -26,7 +26,7 @@ test('dashboard books can be accessed', function () {
         ->get(route('dashboard.books.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Dashboard/DashboardBooks')
+            ->component('Dashboard/Books')
             ->has('books', Book::count())
         );
 });
@@ -40,7 +40,7 @@ test("single book's page can be accessed", function () {
         ->get(route('dashboard.books.single', $book->id))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Dashboard/DashboardBookSingle')
+            ->component('Dashboard/BookSingle')
             ->has('book')
         );
 });
