@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('publisher_id')->constrained();
             $table->longText('synopsis');
             $table->year('published_at');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

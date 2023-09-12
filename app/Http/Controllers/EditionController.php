@@ -29,7 +29,7 @@ class EditionController extends Controller
 
         $edition->delete();
 
-        return Redirect::route('dashboard');
+        return Redirect::route('dashboard.books.single', $edition->book_id);
     }
 
     private function save(Request $request, Edition $edition)

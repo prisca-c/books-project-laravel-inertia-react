@@ -17,6 +17,7 @@ return new class extends Migration
             $table->tinyInteger('rating');
             $table->longText('review')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

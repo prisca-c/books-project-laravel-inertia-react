@@ -22,7 +22,7 @@ const Libraries = ({ auth, libraries }: LibrariesProps) => {
       }
     >
       <div className="relative max-w-7xl mx-auto sm:px-6 lg:px-8">
-        {libraries.length > 0 ? (
+        {libraries && libraries.length > 0 ? (
           libraries.map((library: LibraryType) => (
             <div
               className="bg-white overflow-hidden shadow rounded-lg my-4"

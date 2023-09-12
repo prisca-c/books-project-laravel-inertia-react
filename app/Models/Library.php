@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Library extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -36,7 +38,7 @@ class Library extends Model
 
     public function edition(): BelongsTo
     {
-        return $this->belongsTo(Edition::class);
+        return $this->belongsTo(Edition::class)->withTrashed();
     }
 
     public function status(): Attribute
