@@ -12,10 +12,6 @@ type LibrariesProps = {
 };
 
 const Libraries = ({ auth, libraries }: LibrariesProps) => {
-  useEffect(() => {
-    console.log(libraries);
-  }, []);
-
   return (
     <AuthenticatedLayout
       user={auth.user}
