@@ -44,17 +44,15 @@ class Library extends Model
     public function status(): Attribute
     {
         if ($this->started_at && $this->finished_at) {
-            return new Attribute(
-                get: fn() => 'Finished',
-            );
+            $status = 'Finished';
         } elseif ($this->started_at) {
-            return new Attribute(
-                get: fn() => 'Currently Reading',
-            );
+            $status = 'Currently Reading';
         } else {
-            return new Attribute(
-                get: fn() => 'Not Started',
-            );
+            $status = 'To Read';
         }
+
+        return new Attribute(
+            get: fn() => $status,
+        );
     }
 }

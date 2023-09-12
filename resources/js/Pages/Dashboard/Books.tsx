@@ -39,8 +39,7 @@ const Books = ({ auth, books }: BooksProps) => {
       return books;
     } else {
       return books.filter((book) => {
-        if (!book.editions) return false;
-        return book.editions.length > 0;
+        return book.editions_count > 0;
       });
     }
   };
