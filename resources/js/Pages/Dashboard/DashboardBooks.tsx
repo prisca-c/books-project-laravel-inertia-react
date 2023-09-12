@@ -14,6 +14,7 @@ import { Link, router } from '@inertiajs/react';
 import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
 import { Switch } from '@headlessui/react';
+import AddToLibraryModal from '@/Components/Modals/AddToLibraryModal';
 
 type DashboardBooksProps = {
   auth: PageProps['auth'];
@@ -24,7 +25,11 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
   const [turnEdition, setTurnEdition] = useState(false);
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
   const [showEditBookModal, setShowEditBookModal] = useState(false);
+  const [showAddToLibraryModal, setShowAddToLibraryModal] = useState(false);
   const [editedBook, setEditedBook] = useState<BookType | null>(null);
+  const [addToLibraryBook, setAddToLibraryBook] = useState<BookType | null>(
+    null,
+  );
 
   const isAdmin = auth && auth.user.role_id === 3;
 
@@ -50,8 +55,9 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
     setShowEditBookModal(true);
   };
 
-  const onAddToLibrary = (book: BookType) => {
-    route('dashboard.books.store', book.id);
+  const onAddToLibrary = (book: BookType | null) => {
+    setAddToLibraryBook(book);
+    setShowAddToLibraryModal(true);
   };
 
   return (
@@ -85,6 +91,14 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
           </Switch.Group>
         )}
 
+        {showAddToLibraryModal && (
+          <AddToLibraryModal
+            setShow={setShowAddToLibraryModal}
+            book={addToLibraryBook}
+            userId={auth.user.id}
+          />
+        )}
+
         {isAdmin && turnEdition && (
           <>
             {showCreateBookModal && (
@@ -114,23 +128,23 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
                 </Link>
 
                 {!turnEdition && (
-                  <div
-                    className={
-                      'flex justify-center items-center gap-4 mt-4 px-2'
-                    }
-                  >
-                    <div className={'flex justify-center items-center'}>
+                  <div className={'mt-4 px-2 w-full'}>
+                    <div>
                       {book.editions && book.editions.length > 0 ? (
-                        <button
-                          className={
-                            'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2'
-                          }
-                          onClick={() => onEdit(book)}
-                        >
-                          <FontAwesomeIcon icon={faBook} /> Add to Library
-                        </button>
+                        <>
+                          <button
+                            className={
+                              'text-blue-500 hover:text-blue-700 hover:bg-blue-100 px-2 block mx-auto mt-4'
+                            }
+                            onClick={() => onAddToLibrary(book)}
+                          >
+                            <FontAwesomeIcon icon={faBook} /> Add to Library
+                          </button>
+                        </>
                       ) : (
-                        <p>This book has no edition.</p>
+                        <p className={'text-center'}>
+                          This book has no edition.
+                        </p>
                       )}
                     </div>
                   </div>

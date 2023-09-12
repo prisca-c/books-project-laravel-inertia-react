@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EditionController;
+use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublisherController;
 use App\Models\Book;
@@ -61,6 +62,13 @@ Route::middleware(['auth', 'verified'])->group(fn () => [
             Route::post('/', [EditionController::class, 'store'])->name('dashboard.editions.store')->middleware('is_admin');
             Route::delete('/{id}', [EditionController::class, 'destroy'])->name('dashboard.editions.destroy')->middleware('is_admin');
             Route::put('/{id}', [EditionController::class, 'update'])->name('dashboard.editions.update')->middleware('is_admin');
+        });
+
+        Route::group(['prefix' => 'libraries'], function () {
+            Route::post('/', [LibraryController::class, 'store'])->name('dashboard.libraries.store');
+            Route::delete('/{id}', [LibraryController::class, 'destroy'])->name('dashboard.libraries.destroy');
+            Route::put('/{id}', [LibraryController::class, 'update'])->name('dashboard.libraries.update');
+            Route::get('/{id}', [LibraryController::class, 'show'])->name('dashboard.libraries.show');
         });
     }),
 ]);

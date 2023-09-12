@@ -14,7 +14,6 @@ class Library extends Model
         'user_id',
         'book_id',
         'status_id',
-        'rating_id',
         'edition_id',
         'started_at',
         'finished_at',
