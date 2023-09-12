@@ -31,4 +31,13 @@ class DashboardController extends Controller
             'book' => $book,
         ]);
     }
+
+    public function libraries()
+    {
+        $libraries = (new LibraryController())->index();
+
+        return Inertia::render('Dashboard/Libraries', [
+            'libraries' => $libraries,
+        ]);
+    }
 }
