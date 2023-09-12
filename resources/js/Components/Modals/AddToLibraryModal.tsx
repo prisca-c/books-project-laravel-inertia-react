@@ -69,13 +69,8 @@ const AddToLibraryModal = ({
               </option>
               {book?.editions &&
                 book?.editions.map((edition) => (
-                  <option
-                    key={edition.id}
-                    value={edition.id}
-                    disabled={edition.onLibrary}
-                  >
-                    {`${edition.format} - ${edition.published_at}` +
-                      (edition.onLibrary ? ' (Already on library)' : '')}
+                  <option key={edition.id} value={edition.id}>
+                    {`${edition.format} - ${edition.published_at}`}
                   </option>
                 ))}
             </select>
