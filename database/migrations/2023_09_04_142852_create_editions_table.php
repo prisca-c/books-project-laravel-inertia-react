@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('cover')->nullable();
             $table->year('published_at');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
