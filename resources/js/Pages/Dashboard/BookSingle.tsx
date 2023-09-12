@@ -10,12 +10,12 @@ import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
 import type { EditionType } from '@/types/EditionType';
 
-type DashboardBookSingleProps = {
+type BookSingleProps = {
   auth: PageProps['auth'];
   book: BookType;
 };
 
-const DashboardBookSingle = ({ auth, book }: DashboardBookSingleProps) => {
+const BookSingle = ({ auth, book }: BookSingleProps) => {
   const [edition, setEdition] = useState<EditionType>();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [filter, setFilter] = useState('');
@@ -154,4 +154,4 @@ const DashboardBookSingle = ({ auth, book }: DashboardBookSingleProps) => {
   );
 };
 
-export default DashboardBookSingle;
+export default BookSingle;

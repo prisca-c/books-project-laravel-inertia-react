@@ -16,6 +16,6 @@ class IsAdmin
             return $next($request);
         }
 
-        return redirect('/');
+        return redirect(route('dashboard'));
     }
 }

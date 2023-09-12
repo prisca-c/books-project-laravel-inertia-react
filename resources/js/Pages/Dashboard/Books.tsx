@@ -16,12 +16,12 @@ import type { BookType } from '@/types/BookType';
 import { Switch } from '@headlessui/react';
 import AddToLibraryModal from '@/Components/Modals/AddToLibraryModal';
 
-type DashboardBooksProps = {
+type BooksProps = {
   auth: PageProps['auth'];
   books: BookType[];
 };
 
-const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
+const Books = ({ auth, books }: BooksProps) => {
   const [turnEdition, setTurnEdition] = useState(false);
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
   const [showEditBookModal, setShowEditBookModal] = useState(false);
@@ -184,4 +184,4 @@ const DashboardBooks = ({ auth, books }: DashboardBooksProps) => {
   );
 };
 
-export default DashboardBooks;
+export default Books;
