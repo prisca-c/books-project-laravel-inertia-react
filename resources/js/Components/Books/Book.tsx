@@ -13,9 +13,9 @@ export const Book = ({ book }: { book: BookType }) => {
           <br />
           <span className={'text-sm italic'}>{book.published_at}</span>
           <br />
-          by <b>{book.author.name}</b>
+          by <b>{book.author!.name}</b>
           <br />
-          <span className={'text-sm'}>Publisher: {book.publisher.name}</span>
+          <span className={'text-sm'}>Publisher: {book.publisher!.name}</span>
         </p>
       </article>
       <div
