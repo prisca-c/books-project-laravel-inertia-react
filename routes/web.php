@@ -32,10 +32,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/books', fn() => Inertia::render('Books', [
-    'books' => (new BookController())->index(),
-]))->name('public.books.index');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
