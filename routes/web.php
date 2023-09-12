@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(fn () => [
             Route::post('/', [LibraryController::class, 'store'])->name('dashboard.libraries.store');
             Route::delete('/{id}', [LibraryController::class, 'destroy'])->name('dashboard.libraries.destroy');
             Route::put('/{id}', [LibraryController::class, 'update'])->name('dashboard.libraries.update');
-            Route::get('/{id}', [LibraryController::class, 'show'])->name('dashboard.libraries.show');
+            Route::get('/', [DashboardController::class, 'libraries'])->name('dashboard.libraries.index');
         });
     }),
 ]);
