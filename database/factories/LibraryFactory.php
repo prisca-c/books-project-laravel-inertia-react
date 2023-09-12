@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Library>
+ * @extends Factory<\App\Models\Library>
  */
 class LibraryFactory extends Factory
 {
@@ -20,7 +20,6 @@ class LibraryFactory extends Factory
             'notes' => $this->faker->paragraph,
             'edition_id' => EditionFactory::new(),
             'user_id' => UserFactory::new(),
-            'status_id' => $this->faker->numberBetween(1, 3),
         ];
     }
 }
