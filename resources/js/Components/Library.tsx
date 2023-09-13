@@ -1,7 +1,6 @@
 import { Book } from '@/Components/Books/Book';
 import type { LibraryType } from '@/types/LibraryType';
 import { toDateNomalized } from '@/Helpers/dateHelpers';
-import { useEffect } from 'react';
 
 type LibraryProps = {
   library: LibraryType;

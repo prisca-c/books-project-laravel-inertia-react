@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import useFormEdition from '@/Hooks/useFormEdition';
 import InputError from '@/Components/InputError';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
 import FormButtons from '@/Components/FormButtons';
 
 type CreateEditionModalProps = {

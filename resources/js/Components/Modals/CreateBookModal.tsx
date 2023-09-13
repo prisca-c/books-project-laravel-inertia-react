@@ -1,11 +1,9 @@
 import React from 'react';
-import { AuthorType } from '@/types/AuthorType';
-import { PublisherType } from '@/types/PublisherType';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
 import InputError from '@/Components/InputError';
 import useFormBook from '@/Hooks/useFormBook';
 import FormButtons from '@/Components/FormButtons';
+import type { AuthorType } from '@/types/AuthorType';
+import type { PublisherType } from '@/types/PublisherType';
 
 type CreateBookModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
