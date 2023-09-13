@@ -13,6 +13,7 @@ class LibraryController extends Controller
     public function index()
     {
         return Library::where('user_id', \Auth::user()->id)
+            ->orderBy('created_at')
             ->with('edition.book.author', 'edition.book.publisher')
             ->get();
     }
@@ -27,6 +28,7 @@ class LibraryController extends Controller
                 Rule::unique('libraries')
                     ->where(fn (Builder $query) => $query
                         ->where('user_id', $request->user_id)
+                        ->where('deleted_at', null)
                     ),
             ]
         ];
@@ -39,20 +41,26 @@ class LibraryController extends Controller
 
         Library::create($request->all());
 
-        return \Redirect::route('dashboard.books.index');
+        return \Redirect::route('dashboard.libraries.index');
     }
 
     public function update(Request $request, $id)
     {
         $library = Library::findOrFail($id);
+        $user = \Auth::user();
 
-        $this->validate($request, [
-            'edition_id' => 'required|exists:editions,id',
-            'user_id' => 'required|exists:users,id',
+        $rules = [
+            'edition_id' => [
+                'required',
+                'exists:editions,id',
+                Rule::prohibitedIf(fn() => $user->role_id != 3 ?? $user->id != $library->user_id)
+            ],
             'notes' => 'nullable|string',
             'started_at' => 'nullable|date',
             'finished_at' => 'nullable|date',
-        ]);
+        ];
+
+        $this->validate($request, $rules);
 
         $started_at = $request->started_at;
         $finished_at = $request->finished_at;
