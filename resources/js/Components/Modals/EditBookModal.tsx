@@ -7,6 +7,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import type { BookType } from '@/types/BookType';
 import type { AuthorType } from '@/types/AuthorType';
 import type { PublisherType } from '@/types/PublisherType';
+import FormButtons from '@/Components/FormButtons';
 
 type EditBookModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -122,31 +123,7 @@ const EditBookModal = ({ setShow, book }: EditBookModalProps) => {
             <InputError message={errors.synopsis} />
           </div>
 
-          <div className="flex flex-col gap-2 mt-8">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              type="submit"
-              disabled={processing}
-            >
-              Submit
-            </button>
-
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-              type="button"
-              onClick={() => reset()}
-              disabled={processing}
-            >
-              Reset
-            </button>
-          </div>
-          <button
-            className="absolute top-4 right-4 text-red-500 hover:text-red-700 hover:bg-red-100 px-2"
-            type="button"
-            onClick={() => setShow(false)}
-          >
-            <FontAwesomeIcon icon={faClose} />
-          </button>
+          <FormButtons setShow={setShow} reset={reset} disabled={processing} />
         </div>
       </form>
     </div>

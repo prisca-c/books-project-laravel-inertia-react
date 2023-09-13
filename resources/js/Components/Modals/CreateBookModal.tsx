@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import InputError from '@/Components/InputError';
 import useFormBook from '@/Hooks/useFormBook';
+import FormButtons from '@/Components/FormButtons';
 
 type CreateBookModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -116,31 +117,7 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
             <InputError message={errors.synopsis} />
           </div>
 
-          <div className="flex flex-col gap-2 mt-8">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              type="submit"
-              disabled={processing}
-            >
-              Submit
-            </button>
-
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-              type="button"
-              onClick={() => reset()}
-              disabled={processing}
-            >
-              Reset
-            </button>
-          </div>
-          <button
-            className="absolute top-4 right-4 text-red-500 hover:text-red-700 hover:bg-red-100 px-2"
-            type="button"
-            onClick={() => setShow(false)}
-          >
-            <FontAwesomeIcon icon={faClose} />
-          </button>
+          <FormButtons setShow={setShow} reset={reset} disabled={processing} />
         </div>
       </form>
     </div>
