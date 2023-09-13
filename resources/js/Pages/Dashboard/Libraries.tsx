@@ -7,6 +7,7 @@ import Library from '@/Components/Library';
 import EditionButtons from '@/Components/EditionButtons';
 import type { PageProps } from '@/types';
 import type { LibraryType } from '@/types/LibraryType';
+import EditLibraryModal from '@/Components/Modals/EditLibraryModal';
 
 type LibrariesProps = {
   auth: PageProps['auth'];
@@ -14,8 +15,18 @@ type LibrariesProps = {
 };
 
 const Libraries = ({ auth, libraries }: LibrariesProps) => {
-  const [showEditLibraryModal, setShowEditLibraryModal] = useState(false);
-  const [editedLibrary, setEditedLibrary] = useState<LibraryType | null>(null);
+  const [showEditLibraryModal, setShowEditLibraryModal] =
+    useState<boolean>(false);
+  const [editedLibrary, setEditedLibrary] = useState<Partial<LibraryType>>({
+    edition_id: 0,
+    notes: '',
+    started_at: '',
+    finished_at: '',
+  });
+
+  useEffect(() => {
+    console.log('libraries', libraries);
+  }, []);
 
   const onDelete = (id: number) => {
     router.delete(route('dashboard.libraries.destroy', id), {
@@ -23,7 +34,7 @@ const Libraries = ({ auth, libraries }: LibrariesProps) => {
     });
   };
 
-  const onEdit = (library: LibraryType | null) => {
+  const onEdit = (library: LibraryType) => {
     setEditedLibrary(library);
     setShowEditLibraryModal(true);
   };
@@ -37,6 +48,12 @@ const Libraries = ({ auth, libraries }: LibrariesProps) => {
         </h2>
       }
     >
+      {showEditLibraryModal && (
+        <EditLibraryModal
+          setShow={setShowEditLibraryModal}
+          library={editedLibrary}
+        />
+      )}
       <div className="relative max-w-7xl mx-auto sm:px-6 lg:px-8">
         {libraries && libraries.length > 0 ? (
           libraries.map((library: LibraryType) => (
@@ -44,10 +61,12 @@ const Libraries = ({ auth, libraries }: LibrariesProps) => {
               className="relative bg-white overflow-hidden shadow rounded-lg my-4"
               key={library.id}
             >
-              <EditionButtons
-                onDelete={() => onDelete(library.id)}
-                onEdit={() => onEdit(library)}
-              />
+              <div className={'mt-14 md:mt-0'}>
+                <EditionButtons
+                  onDelete={() => onDelete(library.id)}
+                  onEdit={() => onEdit(library)}
+                />
+              </div>
               <Library library={library} />
             </div>
           ))

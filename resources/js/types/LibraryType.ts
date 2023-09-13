@@ -7,6 +7,7 @@ export type LibraryType = {
   user_id: number;
   notes?: string;
   status: string;
+  created_at: string;
   started_at?: string;
   finished_at?: string;
   edition?: EditionType;
