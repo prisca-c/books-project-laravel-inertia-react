@@ -9,8 +9,8 @@ const useFormBook = () => {
   const [publishers, setPublishers] = useState<PublisherType[]>([]);
   const { data, setData, post, put, processing, errors, reset } = useForm({
     title: '',
-    author_id: '',
-    publisher_id: '',
+    author_id: 0,
+    publisher_id: 0,
     published_at: '',
     synopsis: '',
   });
