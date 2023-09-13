@@ -38,7 +38,7 @@ class EditionController extends Controller
             'book_id' => 'required|exists:books,id',
             'format' => 'required',
             'description' => 'required',
-            'cover' => 'nullable|image',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,wepb|max:2048',
             'published_at' => 'required',
         ]);
 

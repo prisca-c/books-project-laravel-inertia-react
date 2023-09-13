@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
-import { router } from '@inertiajs/react';
 import useFormBook from '@/Hooks/useFormBook';
 import InputError from '@/Components/InputError';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import FormButtons from '@/Components/FormButtons';
 import type { BookType } from '@/types/BookType';
 import type { AuthorType } from '@/types/AuthorType';
 import type { PublisherType } from '@/types/PublisherType';
-import FormButtons from '@/Components/FormButtons';
 
 type EditBookModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;

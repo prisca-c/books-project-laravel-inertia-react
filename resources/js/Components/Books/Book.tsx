@@ -1,4 +1,5 @@
 import { BookType } from '@/types/BookType';
+import { toTruncate } from '@/Helpers/textHelpers';
 
 export const Book = ({ book }: { book: BookType }) => {
   return (
@@ -24,10 +25,10 @@ export const Book = ({ book }: { book: BookType }) => {
             'h-[100px] w-[100px] md:h-[150px] md:w-[150px] m-auto flex justify-center items-center'
           }
         >
-          <img src={book.cover} alt={book.title} className={'m-auto'} />
+          <img src={book.cover} alt={book.title} className={'m-auto h-full'} />
         </div>
-        <p className={'text-start text-sm h-[100px] overflow-hidden'}>
-          {book.synopsis}
+        <p className={'mt-3 text-start text-sm h-[100px] overflow-hidden'}>
+          {toTruncate(book.synopsis, 180)}
         </p>
       </div>
     )

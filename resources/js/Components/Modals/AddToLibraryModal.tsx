@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import type { BookType } from '@/types/BookType';
-import type { LibraryType } from '@/types/LibraryType';
-import { EditionType } from '@/types/EditionType';
 
 type AddToLibraryModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,9 +14,6 @@ const AddToLibraryModal = ({
   book,
   userId,
 }: AddToLibraryModalProps) => {
-  const [editions, setEditions] = useState<EditionType[] | null | undefined>(
-    null,
-  );
   const { data, setData, post, processing, errors, reset } = useForm({
     edition_id: 0,
     user_id: 0,

@@ -1,13 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faPlus } from '@fortawesome/free-solid-svg-icons';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { router } from '@inertiajs/react';
 import Library from '@/Components/Library';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import EditionButtons from '@/Components/EditionButtons';
+import EditLibraryModal from '@/Components/Modals/EditLibraryModal';
 import type { PageProps } from '@/types';
 import type { LibraryType } from '@/types/LibraryType';
-import EditLibraryModal from '@/Components/Modals/EditLibraryModal';
 
 type LibrariesProps = {
   auth: PageProps['auth'];
@@ -23,10 +21,6 @@ const Libraries = ({ auth, libraries }: LibrariesProps) => {
     started_at: '',
     finished_at: '',
   });
-
-  useEffect(() => {
-    console.log('libraries', libraries);
-  }, []);
 
   const onDelete = (id: number) => {
     router.delete(route('dashboard.libraries.destroy', id), {
