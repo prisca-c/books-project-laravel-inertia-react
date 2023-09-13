@@ -53,7 +53,7 @@ class LibraryController extends Controller
             'edition_id' => [
                 'required',
                 'exists:editions,id',
-                Rule::prohibitedIf(fn() => $user->role_id != 3 ?? $user->id != $library->user_id)
+                Rule::prohibitedIf(fn() => $user->id != $library->user_id) ?? $user->role_id != 3
             ],
             'notes' => 'nullable|string',
             'started_at' => 'nullable|date',
