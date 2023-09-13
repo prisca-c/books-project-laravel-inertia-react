@@ -13,12 +13,13 @@ type EditBookModalProps = {
   book: BookType | null;
 };
 
-const EditBookModal = ({ setShow, book }: any) => {
+const EditBookModal = ({ setShow, book }: EditBookModalProps) => {
   const { authors, publishers, data, setData, processing, errors, reset, put } =
     useFormBook();
 
   useEffect(() => {
     setData({
+      // @ts-ignore
       title: book?.title,
       author_id: book?.author_id,
       publisher_id: book?.publisher_id,
@@ -29,7 +30,7 @@ const EditBookModal = ({ setShow, book }: any) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    put(route('dashboard.books.update', book.id), {
+    put(route('dashboard.books.update', book?.id), {
       preserveScroll: true,
       onSuccess: () => {
         setShow(false);
