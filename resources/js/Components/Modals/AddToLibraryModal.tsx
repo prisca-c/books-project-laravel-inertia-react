@@ -31,6 +31,8 @@ const AddToLibraryModal = ({
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (data.edition_id === 0) return;
+
     post(route('dashboard.libraries.store'), {
       preserveScroll: true,
       onSuccess: () => {
@@ -67,13 +69,8 @@ const AddToLibraryModal = ({
               </option>
               {book?.editions &&
                 book?.editions.map((edition) => (
-                  <option
-                    key={edition.id}
-                    value={edition.id}
-                    disabled={edition.onLibrary}
-                  >
-                    {`${edition.format} - ${edition.published_at}` +
-                      (edition.onLibrary ? ' (Already on library)' : '')}
+                  <option key={edition.id} value={edition.id}>
+                    {`${edition.format} - ${edition.published_at}`}
                   </option>
                 ))}
             </select>
@@ -90,8 +87,13 @@ const AddToLibraryModal = ({
             </button>
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
-              disabled={processing}
+              className={
+                'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg' +
+                (processing || data.edition_id === 0
+                  ? ' cursor-not-allowed'
+                  : '')
+              }
+              disabled={processing || data.edition_id === 0}
             >
               Add to Library
             </button>

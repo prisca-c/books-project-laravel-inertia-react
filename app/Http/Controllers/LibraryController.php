@@ -4,52 +4,63 @@ namespace App\Http\Controllers;
 
 use App\Models\Library;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LibraryController extends Controller
 {
     public function index()
     {
         return Library::where('user_id', \Auth::user()->id)
+            ->orderBy('created_at')
             ->with('edition.book.author', 'edition.book.publisher')
             ->get();
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $rules = [
             'user_id' => 'required|exists:users,id',
             'edition_id' => [
                 'required',
                 'exists:editions,id',
-                function ($attribute, $value, $fail) {
-                    $library = Library::where('edition_id', $value)
-                        ->where('user_id', request()->user_id)
-                        ->first();
-
-                    if ($library) {
-                        $fail('This edition is already in your library.');
-                    }
-                }
+                Rule::unique('libraries')
+                    ->where(fn (Builder $query) => $query
+                        ->where('user_id', $request->user_id)
+                        ->where('deleted_at', null)
+                    ),
             ]
-        ]);
+        ];
+
+        $customMessages = [
+            'edition_id.unique' => 'This edition is already in your library.',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
 
         Library::create($request->all());
 
-        return \Redirect::route('dashboard.books.index');
+        return \Redirect::route('dashboard.libraries.index');
     }
 
     public function update(Request $request, $id)
     {
         $library = Library::findOrFail($id);
+        $user = \Auth::user();
 
-        $this->validate($request, [
-            'edition_id' => 'required|exists:editions,id',
-            'user_id' => 'required|exists:users,id',
+        $rules = [
+            'edition_id' => [
+                'required',
+                'exists:editions,id',
+                Rule::prohibitedIf(fn() => $user->role_id != 3 ?? $user->id != $library->user_id)
+            ],
             'notes' => 'nullable|string',
             'started_at' => 'nullable|date',
             'finished_at' => 'nullable|date',
-        ]);
+        ];
+
+        $this->validate($request, $rules);
 
         $started_at = $request->started_at;
         $finished_at = $request->finished_at;

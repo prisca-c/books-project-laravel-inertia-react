@@ -14,6 +14,9 @@ const Library = ({ library }: LibraryProps) => {
         'flex flex-col md:flex-row gap-6 justify-center items-center text-center p-2'
       }
     >
+      <div className={'absolute top-0 left-0 p-2 bg-gray-100 rounded-br-lg'}>
+        Added to library on {toDateNomalized(library.created_at)}
+      </div>
       <div className={'md:w-[35%]'}>
         <Book book={library.edition?.book!} />
       </div>
