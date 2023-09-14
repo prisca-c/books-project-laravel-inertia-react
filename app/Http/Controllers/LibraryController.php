@@ -12,10 +12,23 @@ class LibraryController extends Controller
 {
     public function index()
     {
-        return Library::where('user_id', \Auth::user()->id)
+        $user = \Auth::user();
+        $libraries = Library::where('user_id', $user->id)
             ->orderBy('created_at')
             ->with('edition.book.author', 'edition.book.publisher')
             ->get();
+
+        $user_ratings = \Auth::user()
+            ->ratings()
+            ->get();
+
+        foreach ($libraries as $library) {
+            $library->rating = $user_ratings
+                ->where('book_id', $library->edition->book->id)
+                ->first();
+        }
+
+        return $libraries;
     }
 
     public function store(Request $request)
