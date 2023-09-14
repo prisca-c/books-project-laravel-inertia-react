@@ -16,11 +16,11 @@ class RatingController extends Controller
             'book_id' => [
                 'required',
                 'exists:books,id',
-                Rule::unique('ratings')
-                    ->where(fn (Builder $query) => $query
+                Rule::unique('ratings')->where(
+                    fn(Builder $query) => $query
                         ->where('user_id', $user->id)
-                        ->where('deleted_at', null)
-                    ),
+                        ->where('deleted_at', null),
+                ),
             ],
             'rating' => 'required|integer|min:1|max:5',
             'review' => 'nullable|string',
@@ -32,11 +32,13 @@ class RatingController extends Controller
 
         $this->validate($request, $rules, $customMessages);
 
-        \Auth::user()->ratings()->create([
-            'rating' => $request->rating,
-            'book_id' => $request->book_id,
-            'review' => $request->review,
-        ]);
+        \Auth::user()
+            ->ratings()
+            ->create([
+                'rating' => $request->rating,
+                'book_id' => $request->book_id,
+                'review' => $request->review,
+            ]);
 
         return \Redirect::route('dashboard.books.single', $request->book_id);
     }
@@ -52,13 +54,15 @@ class RatingController extends Controller
                 'integer',
                 'min:1',
                 'max:5',
-                Rule::prohibitedIf(fn() => $user->id != $rating->user_id) ?? $user->role_id != 3
+                Rule::prohibitedIf(fn() => $user->id != $rating->user_id) ??
+                $user->role_id != 3,
             ],
             'review' => 'nullable|string',
         ];
 
         $customMessages = [
-            'rating.prohibited_if' => 'You are not allowed to edit this rating.',
+            'rating.prohibited_if' =>
+                'You are not allowed to edit this rating.',
         ];
 
         $this->validate($request, $rules, $customMessages);
@@ -77,7 +81,9 @@ class RatingController extends Controller
         $user = \Auth::user();
 
         if ($user->id != $rating->user_id ?? $user->role_id != 3) {
-            return redirect()->back()->withErrors(['You are not allowed to delete this rating.']);
+            return redirect()
+                ->back()
+                ->withErrors(['You are not allowed to delete this rating.']);
         }
 
         $rating->delete();

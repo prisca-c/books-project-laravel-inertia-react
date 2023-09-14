@@ -1,5 +1,5 @@
-import { BookType } from '@/types/BookType';
 import { toTruncate } from '@/Helpers/textHelpers';
+import type { BookType } from '@/types/BookType';
 
 export const Book = ({ book }: { book: BookType }) => {
   return (
