@@ -1,4 +1,5 @@
 import React from 'react';
+import { Transition } from '@headlessui/react';
 
 type AccordionProps = {
   title: string;
@@ -45,20 +46,30 @@ export const Accordion = ({ title, children }: AccordionProps) => {
         >
           <h1 className="text-lg font-bold mx-auto">{title}</h1>
         </div>
-        <div
-          className={`border border-gray-300 rounded-lg accordion__content ${contentClass}`}
+        <Transition
+          show={isOpen}
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          {children}
-          <button
-            className={
-              (isOpen ? 'absolute' : 'hidden') +
-              ' bottom-0 right-0 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg'
-            }
-            onClick={() => setIsOpen(false)}
+          <div
+            className={`border border-gray-300 rounded-lg accordion__content ${contentClass}`}
           >
-            Close
-          </button>
-        </div>
+            {children}
+            <button
+              className={
+                (isOpen ? 'absolute' : 'hidden') +
+                ' bottom-0 right-0 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg'
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+        </Transition>
       </div>
     </>
   );

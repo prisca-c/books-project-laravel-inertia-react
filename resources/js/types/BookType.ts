@@ -1,6 +1,7 @@
 import type { AuthorType } from '@/types/AuthorType';
 import type { PublisherType } from '@/types/PublisherType';
 import type { EditionType } from '@/types/EditionType';
+import type { RatingType } from '@/types/RatingType';
 
 export type BookType = {
   id: number;
@@ -12,6 +13,8 @@ export type BookType = {
   publisher_id: number;
   publisher?: PublisherType;
   editions?: EditionType[];
+  ratings?: RatingType[];
+  rating: number;
   editions_count: number;
   published_at: string;
 };

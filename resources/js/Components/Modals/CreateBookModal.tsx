@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import InputError from '@/Components/InputError';
 import useFormBook from '@/Hooks/useFormBook';
 import FormButtons from '@/Components/FormButtons';
+import { Combobox } from '@headlessui/react';
 import type { AuthorType } from '@/types/AuthorType';
 import type { PublisherType } from '@/types/PublisherType';
 
@@ -10,6 +11,12 @@ type CreateBookModalProps = {
 };
 
 const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
+  const [selectedAuthor, setSelectedAuthor] = useState<AuthorType | null>(null);
+  const [selectedPublisher, setSelectedPublisher] =
+    useState<PublisherType | null>(null);
+  const [queryPublisher, setQueryPublisher] = useState('');
+  const [queryAuthor, setQueryAuthor] = useState('');
+
   const {
     authors,
     publishers,
@@ -21,6 +28,16 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
     reset,
   } = useFormBook();
 
+  useEffect(() => {
+    if (selectedAuthor) {
+      setData('author_id', selectedAuthor.id);
+    }
+
+    if (selectedPublisher) {
+      setData('publisher_id', selectedPublisher.id);
+    }
+  }, [selectedAuthor, selectedPublisher]);
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     post(route('dashboard.books.store'), {
@@ -31,6 +48,20 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
     });
   };
 
+  const filteredPublishers =
+    queryPublisher === ''
+      ? publishers
+      : publishers.filter((publisher: PublisherType) =>
+          publisher.name.toLowerCase().includes(queryPublisher.toLowerCase()),
+        );
+  const filteredAuthors =
+    queryAuthor === ''
+      ? authors
+      : authors.filter((author: AuthorType) =>
+          author.name.toLowerCase().includes(queryAuthor.toLowerCase()),
+        );
+
+  // @ts-ignore
   return (
     <div className="fixed z-10 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
       <form
@@ -51,41 +82,47 @@ const CreateBookModal = ({ setShow }: CreateBookModalProps) => {
             <InputError message={errors.title} />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="author_id">Author</label>
-            <select
-              id="author_id"
-              className="border border-gray-300 p-2"
-              value={data.author_id}
-              onChange={(e) => setData('author_id', e.target.value)}
-            >
-              <option value="">Select an author</option>
-              {authors &&
-                authors.map((author: AuthorType) => (
-                  <option key={author.id} value={author.id}>
+          <div className="relative flex flex-col gap-2">
+            <label>Author</label>
+            <Combobox value={selectedAuthor} onChange={setSelectedAuthor}>
+              <Combobox.Input
+                onChange={(e) => setQueryAuthor(e.target.value)}
+                displayValue={(author: AuthorType) => author?.name}
+              />
+              <Combobox.Options className="z-10 border border-gray-300 p-2 overflow-y-auto max-h-60 absolute top-full w-full bg-white">
+                {filteredAuthors.map((author: AuthorType) => (
+                  <Combobox.Option
+                    key={author.id}
+                    value={author}
+                    className={'p-2 hover:bg-gray-100 cursor-pointer border-b'}
+                  >
                     {author.name}
-                  </option>
+                  </Combobox.Option>
                 ))}
-            </select>
+              </Combobox.Options>
+            </Combobox>
             <InputError message={errors.author_id} />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="publisher_id">Publisher</label>
-            <select
-              id="publisher_id"
-              className="border border-gray-300 p-2"
-              value={data.publisher_id}
-              onChange={(e) => setData('publisher_id', e.target.value)}
-            >
-              <option value="">Select a publisher</option>
-              {publishers &&
-                publishers.map((publisher: PublisherType) => (
-                  <option key={publisher.id} value={publisher.id}>
+          <div className="relative flex flex-col gap-2">
+            <label>Publisher</label>
+            <Combobox value={selectedPublisher} onChange={setSelectedPublisher}>
+              <Combobox.Input
+                onChange={(e) => setQueryPublisher(e.target.value)}
+                displayValue={(publisher: PublisherType) => publisher?.name}
+              />
+              <Combobox.Options className="z-10 border border-gray-300 p-2 overflow-y-auto max-h-60 absolute top-full w-full bg-white">
+                {filteredPublishers.map((publisher: PublisherType) => (
+                  <Combobox.Option
+                    key={publisher.id}
+                    value={publisher}
+                    className={'p-2 hover:bg-gray-100 cursor-pointer border-b'}
+                  >
                     {publisher.name}
-                  </option>
+                  </Combobox.Option>
                 ))}
-            </select>
+              </Combobox.Options>
+            </Combobox>
             <InputError message={errors.publisher_id} />
           </div>
 
