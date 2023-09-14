@@ -12,10 +12,23 @@ class LibraryController extends Controller
 {
     public function index()
     {
-        return Library::where('user_id', \Auth::user()->id)
+        $user = \Auth::user();
+        $libraries = Library::where('user_id', $user->id)
             ->orderBy('created_at')
             ->with('edition.book.author', 'edition.book.publisher')
             ->get();
+
+        $user_ratings = \Auth::user()
+            ->ratings()
+            ->get();
+
+        foreach ($libraries as $library) {
+            $library->rating = $user_ratings
+                ->where('book_id', $library->edition->book->id)
+                ->first();
+        }
+
+        return $libraries;
     }
 
     public function store(Request $request)
@@ -25,12 +38,12 @@ class LibraryController extends Controller
             'edition_id' => [
                 'required',
                 'exists:editions,id',
-                Rule::unique('libraries')
-                    ->where(fn (Builder $query) => $query
+                Rule::unique('libraries')->where(
+                    fn(Builder $query) => $query
                         ->where('user_id', $request->user_id)
-                        ->where('deleted_at', null)
-                    ),
-            ]
+                        ->where('deleted_at', null),
+                ),
+            ],
         ];
 
         $customMessages = [
@@ -53,7 +66,8 @@ class LibraryController extends Controller
             'edition_id' => [
                 'required',
                 'exists:editions,id',
-                Rule::prohibitedIf(fn() => $user->id != $library->user_id) ?? $user->role_id != 3
+                Rule::prohibitedIf(fn() => $user->id != $library->user_id) ??
+                $user->role_id != 3,
             ],
             'notes' => 'nullable|string',
             'started_at' => 'nullable|date',
@@ -73,7 +87,9 @@ class LibraryController extends Controller
 
         if (!$started_at && $finished_at) {
             $this->validate($request, [
-                'started_at' => fn($attribute, $value, $fail) => $fail('You must set a start date before setting a finish date.'),
+                'started_at' => fn($attribute, $value, $fail) => $fail(
+                    'You must set a start date before setting a finish date.',
+                ),
             ]);
         }
 

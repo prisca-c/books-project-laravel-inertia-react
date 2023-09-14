@@ -4,5 +4,21 @@
   "tabWidth": 2,
   "bracketSpacing": true,
   "endOfLine": "lf",
-  "semi": true
+  "semi": true,
+  "plugins": ["@prettier/plugin-php"],
+  "overrides": [
+    {
+      "files": "*.php",
+      "options": {
+        "phpVersion": "8.1",
+        "parser": "php",
+        "printWidth": 80,
+        "singleQuote": true,
+        "tabWidth": 4,
+        "bracketSpacing": true,
+        "endOfLine": "lf",
+        "semi": true
+      }
+    }
+  ]
 }
