@@ -54,68 +54,24 @@ Route::middleware(['auth', 'verified'])->group(
             );
 
             // -- Books --
-            Route::group(['prefix' => 'books'], function () {
-                Route::get('/', [DashboardController::class, 'books'])->name(
-                    'dashboard.books.index',
-                );
-                Route::post('/', [BookController::class, 'store'])
-                    ->name('dashboard.books.store')
-                    ->middleware('is_admin');
-                Route::delete('/{id}', [BookController::class, 'destroy'])
-                    ->name('dashboard.books.destroy')
-                    ->middleware('is_admin');
-                Route::put('/{id}', [BookController::class, 'update'])
-                    ->name('dashboard.books.update')
-                    ->middleware('is_admin');
+            Route::namespace('Book')->group(
+                __DIR__ . '/Dashboard/BooksRoutes.php',
+            );
 
-                Route::get('/{id}', [
-                    DashboardController::class,
-                    'bookSingle',
-                ])->name('dashboard.books.single');
-            });
+            // -- Editions --
+            Route::namespace('Edition')->group(
+                __DIR__ . '/Dashboard/EditionsRoutes.php',
+            );
 
-            Route::group(['prefix' => 'editions'], function () {
-                Route::post('/', [EditionController::class, 'store'])
-                    ->name('dashboard.editions.store')
-                    ->middleware('is_admin');
-                Route::delete('/{id}', [EditionController::class, 'destroy'])
-                    ->name('dashboard.editions.destroy')
-                    ->middleware('is_admin');
-                Route::put('/{id}', [EditionController::class, 'update'])
-                    ->name('dashboard.editions.update')
-                    ->middleware('is_admin');
-            });
+            // -- Libraries --
+            Route::namespace('Library')->group(
+                __DIR__ . '/Dashboard/LibrariesRoutes.php',
+            );
 
-            Route::group(['prefix' => 'libraries'], function () {
-                Route::post('/', [LibraryController::class, 'store'])->name(
-                    'dashboard.libraries.store',
-                );
-                Route::delete('/{id}', [
-                    LibraryController::class,
-                    'destroy',
-                ])->name('dashboard.libraries.destroy');
-                Route::put('/{id}', [LibraryController::class, 'update'])->name(
-                    'dashboard.libraries.update',
-                );
-                Route::get('/', [
-                    DashboardController::class,
-                    'libraries',
-                ])->name('dashboard.libraries.index');
-            });
-
-            Route::group(['prefix' => 'ratings'], function () {
-                Route::post('/', [RatingController::class, 'store'])->name(
-                    'dashboard.ratings.store',
-                );
-                Route::delete('/{id}', [
-                    DashboardController::class,
-                    'destroyRating',
-                ])->name('dashboard.ratings.destroy');
-                Route::put('/{id}', [
-                    DashboardController::class,
-                    'updateRating',
-                ])->name('dashboard.ratings.update');
-            });
+            // -- Ratings --
+            Route::namespace('Rating')->group(
+                __DIR__ . '/Dashboard/RatingsRoutes.php',
+            );
         }),
     ],
 );
