@@ -27,6 +27,7 @@ class Book extends Model
 
     protected $appends = [
         'cover',
+        'rating',
     ];
 
     protected $withCount = [
@@ -67,6 +68,14 @@ class Book extends Model
         return $this->hasOne(Edition::class)->latestOfMany();
     }
 
+    public function rating(): Attribute
+    {
+        $bookRating = $this->ratings()->avg('rating');
+        return new Attribute(
+            get: fn () => round($bookRating, 1)
+        );
+    }
+
     public function cover(): Attribute
     {
         $path = $this->firstEdition
@@ -75,6 +84,6 @@ class Book extends Model
         return new Attribute(
             get: fn () => $path //$this->firstEdition?->cover_url ?? 'https://via.placeholder.com/150'
 
-    );
+        );
     }
 }
