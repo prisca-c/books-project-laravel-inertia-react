@@ -28,7 +28,7 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        $book->load('author', 'publisher', 'editions');
+        $book->load('author', 'publisher', 'editions', 'ratings');
 
         return $book;
     }
