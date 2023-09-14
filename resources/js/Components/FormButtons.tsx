@@ -24,7 +24,6 @@ const FormButtons = ({ setShow, disabled, reset }: FormButtonsProps) => {
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
           type="button"
           onClick={() => reset()}
-          disabled={disabled}
         >
           Reset
         </button>

@@ -1,7 +1,7 @@
 export type RatingType = {
   id: number;
   rating: number;
-  review: string;
+  review?: string;
   user_id: number;
   book_id: number;
 };

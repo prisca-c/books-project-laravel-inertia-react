@@ -51,7 +51,7 @@ const StarRating = ({ rating, onStarClick }: StarRatingProps) => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center">
       {Array.from(Array(5).keys()).map((i) => (
         <FontAwesomeIcon
           icon={faStar}

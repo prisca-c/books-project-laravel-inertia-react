@@ -7,7 +7,7 @@ use App\Http\Controllers\EditionController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublisherController;
-use App\Models\Book;
+use App\Http\Controllers\RatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -65,6 +65,10 @@ Route::middleware(['auth', 'verified'])->group(fn () => [
             Route::delete('/{id}', [LibraryController::class, 'destroy'])->name('dashboard.libraries.destroy');
             Route::put('/{id}', [LibraryController::class, 'update'])->name('dashboard.libraries.update');
             Route::get('/', [DashboardController::class, 'libraries'])->name('dashboard.libraries.index');
+        });
+
+        Route::group(['prefix' => 'ratings'], function () {
+            Route::post('/', [RatingController::class, 'store'])->name('dashboard.ratings.store');
         });
     }),
 ]);
