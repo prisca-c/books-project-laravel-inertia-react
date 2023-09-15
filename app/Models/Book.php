@@ -32,6 +32,7 @@ class Book extends Model
 
     protected $withCount = [
         'editions',
+        'ratings'
     ];
 
     protected $with =[

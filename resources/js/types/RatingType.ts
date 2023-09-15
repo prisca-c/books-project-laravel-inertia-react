@@ -4,4 +4,5 @@ export type RatingType = {
   review?: string;
   user_id: number;
   book_id: number;
+  username?: string;
 };
