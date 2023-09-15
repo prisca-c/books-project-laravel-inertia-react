@@ -60,6 +60,10 @@ Route::middleware(['auth', 'verified'])->group(
             // -- Ratings --
             Route::namespace('Rating')
                 ->group(__DIR__ . '/Dashboard/RatingsRoutes.php');
+
+            // -- Wishlist --
+            Route::namespace('Wishlist')
+                ->group(__DIR__ . '/Dashboard/WishlistRoutes.php');
         }),
     ],
 );

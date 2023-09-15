@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class EditionFactory extends Factory
     public function definition(): array
     {
         return [
+            'book_id' => Book::factory(),
             'format' => $this->faker->randomElement(['hardcover', 'paperback', 'ebook']),
             'description' => $this->faker->paragraph,
             'cover' => $this->faker->imageUrl(),
