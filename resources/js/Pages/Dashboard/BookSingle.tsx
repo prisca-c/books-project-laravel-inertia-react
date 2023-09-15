@@ -1,16 +1,13 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { useState } from 'react';
 import { Link } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import { toTruncate } from '@/Helpers/textHelpers';
-import { filterBy } from '@/Helpers/arrayHelpers';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import CreateEditionModal from '@/Components/Modals/CreateEditionModal';
-import Accordion from '@/Components/Accordion';
 import RatingModal from '@/Components/Modals/RatingModal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import BookInfos from '@/Components/Books/BookInfos';
+import Reviews from '@/Components/Reviews';
+import { toTruncate } from '@/Helpers/textHelpers';
 import type { PageProps } from '@/types';
 import type { BookType } from '@/types/BookType';
-import type { EditionType } from '@/types/EditionType';
 
 type BookSingleProps = {
   auth: PageProps['auth'];
@@ -18,24 +15,10 @@ type BookSingleProps = {
 };
 
 const BookSingle = ({ auth, book }: BookSingleProps) => {
-  const [edition, setEdition] = useState<EditionType>();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
-  const [filter, setFilter] = useState('');
 
   const isAdmin = auth.user?.role_id === 3;
-
-  const activeEdition = book.editions?.find((e) => e.id === edition?.id);
-
-  const editions = (): EditionType[] => {
-    return filterBy(book.editions as EditionType[], 'format', filter);
-  };
-
-  useEffect(() => {
-    if (book.editions && book.editions.length > 0) {
-      setEdition(book.editions[0]);
-    }
-  }, []);
 
   return (
     <AuthenticatedLayout
@@ -57,9 +40,11 @@ const BookSingle = ({ auth, book }: BookSingleProps) => {
               >
                 Rate this book
               </button>
+
               {showRatingModal && (
                 <RatingModal setShow={setShowRatingModal} bookId={book.id} />
               )}
+
               {isAdmin && (
                 <>
                   <button
@@ -80,88 +65,7 @@ const BookSingle = ({ auth, book }: BookSingleProps) => {
             </div>
 
             {book ? (
-              <div className="flex flex-col md:flex-row text-center justify-center items-start gap-4 md:gap-[0]">
-                <div className="relative w-full md:w-[50%] h-full border border-gray-300 rounded-lg overflow-hidden">
-                  <img
-                    src={edition?.cover_url || book.cover}
-                    alt={book.title}
-                    className={'w-[400px] h-[400px] object-contain m-auto'}
-                  />
-                </div>
-
-                <div
-                  className={
-                    'flex flex-col justify-center items-center gap-4 w-full md:w-[50%]'
-                  }
-                >
-                  <p>
-                    Book Rating:{' '}
-                    <b>
-                      {book.rating === 0 ? 'Not rated yet' : book.rating + '/5'}{' '}
-                      <FontAwesomeIcon
-                        icon={faStar}
-                        className={'text-yellow-500'}
-                      />
-                    </b>
-                  </p>
-                  <Accordion title={'Editions'}>
-                    {book.editions && book.editions.length > 0 && (
-                      <>
-                        <input
-                          type="text"
-                          placeholder="Filter by format"
-                          className="border border-gray-300 p-2 mb-3 w-full"
-                          value={filter}
-                          onChange={(e) => setFilter(e.target.value)}
-                        />
-                        <div
-                          className={
-                            'grid grid-cols-2 md:grid-cols-3 gap-2 pb-[45px]'
-                          }
-                        >
-                          {editions().map((edition) => (
-                            <button
-                              key={edition.id}
-                              onClick={() => setEdition(edition)}
-                              className={
-                                'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm' +
-                                (activeEdition?.id === edition.id
-                                  ? ' bg-blue-700'
-                                  : '')
-                              }
-                            >
-                              {edition.format}
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </Accordion>
-                  <h3 className="text-lg leading-6 font-medium text-gray-900">
-                    {book.title}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-gray-500">
-                    Author: <b>{book?.author?.name}</b>
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Publisher: <b>{book.publisher?.name}</b>
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Book Published: <b>{book.published_at}</b>
-                    {edition && (
-                      <>
-                        <br />
-                        Edition Published: <b>{edition.published_at}</b>
-                      </>
-                    )}
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Synopsis :<br />
-                    <b>{book.synopsis}</b>
-                  </p>
-                </div>
-              </div>
+              <BookInfos book={book} />
             ) : (
               <p className="text-lg text-center leading-6 font-medium text-gray-900">
                 Book not found.
