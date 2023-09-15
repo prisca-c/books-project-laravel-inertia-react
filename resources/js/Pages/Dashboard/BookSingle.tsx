@@ -169,6 +169,12 @@ const BookSingle = ({ auth, book }: BookSingleProps) => {
             )}
           </div>
         </div>
+
+        <div className={'bg-white overflow-hidden shadow rounded-lg my-4'}>
+          <div className={'px-4 py-5 sm:p-6 flex flex-col gap-4'}>
+            <Reviews reviews={book.ratings || []} />
+          </div>
+        </div>
       </div>
     </AuthenticatedLayout>
   );
