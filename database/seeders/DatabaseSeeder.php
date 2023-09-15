@@ -9,6 +9,7 @@ use App\Models\Edition;
 use App\Models\Library;
 use App\Models\Publisher;
 use App\Models\Rating;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
@@ -30,6 +31,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(10)->create();
+
+        Tag::factory(10)->create();
 
         Book::factory(10)->create();
 
