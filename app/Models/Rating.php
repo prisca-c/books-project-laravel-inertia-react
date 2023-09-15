@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,5 +28,13 @@ class Rating extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeWithUsername(Builder $query)
+    {
+        // Select ratings.*, (select username from users where users.id =  user_id) as username from ratings
+        return $query->addSelect(['username' =>
+            User::select('username')->whereColumn('users.id', 'user_id')]
+        );
     }
 }

@@ -1,5 +1,6 @@
 import { BookType } from '@/types/BookType';
-import { EditionType } from '@/types/EditionType';
+import type { EditionType } from '@/types/EditionType';
+import type { RatingType } from '@/types/RatingType';
 
 export type LibraryType = {
   id: number;
@@ -11,4 +12,5 @@ export type LibraryType = {
   started_at?: string;
   finished_at?: string;
   edition?: EditionType;
+  rating?: RatingType | null;
 };

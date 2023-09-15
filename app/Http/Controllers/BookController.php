@@ -28,7 +28,12 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        $book->load('author', 'publisher', 'editions', 'ratings');
+        $book->load([
+            'author',
+            'publisher',
+            'editions',
+            'ratings' => fn($query) => $query->withUsername()
+        ]);
 
         return $book;
     }

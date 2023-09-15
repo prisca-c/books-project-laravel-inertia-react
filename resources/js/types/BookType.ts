@@ -14,6 +14,7 @@ export type BookType = {
   publisher?: PublisherType;
   editions?: EditionType[];
   ratings?: RatingType[];
+  ratings_count: number;
   rating: number;
   editions_count: number;
   published_at: string;
