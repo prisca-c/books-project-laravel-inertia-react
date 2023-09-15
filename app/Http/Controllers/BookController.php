@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use LaravelIdea\Helper\App\Models\_IH_Book_C;
 
 class BookController extends Controller
 {
@@ -46,17 +47,12 @@ class BookController extends Controller
             'publisher_id' => 'required',
             'published_at' => 'required|date_format:Y',
             'synopsis' => 'required',
+            'tags' => 'nullable|array|exists:tags,id',
         ]);
 
         $book = new Book();
 
-        $book->title = $request->title;
-        $book->author_id = $request->author_id;
-        $book->publisher_id = $request->publisher_id;
-        $book->synopsis = $request->synopsis;
-        $book->published_at = $request->published_at;
-
-        $book->save();
+        $this->save($request, $book);
 
         return redirect()->route('dashboard.books.index');
     }
@@ -69,17 +65,12 @@ class BookController extends Controller
             'publisher_id' => 'required|exists:publishers,id',
             'published_at' => 'required|date_format:Y',
             'synopsis' => 'required',
+            'tags' => 'nullable|array|exists:tags,id',
         ]);
 
         $book = Book::findOrFail($id);
 
-        $book->title = $request->title;
-        $book->author_id = $request->author_id;
-        $book->publisher_id = $request->publisher_id;
-        $book->synopsis = $request->synopsis;
-        $book->published_at = $request->published_at;
-
-        $book->save();
+        $this->save($request, $book);
 
         return Redirect::route('dashboard.books.index');
     }
@@ -91,5 +82,23 @@ class BookController extends Controller
         $book->delete();
 
         return Redirect::route('dashboard.books.index');
+    }
+
+    /**
+     * @param Request $request
+     * @param array|Book|_IH_Book_C $book
+     * @return void
+     */
+    private function save(Request $request, array|Book|_IH_Book_C $book): void
+    {
+        $book->title = $request->title;
+        $book->author_id = $request->author_id;
+        $book->publisher_id = $request->publisher_id;
+        $book->synopsis = $request->synopsis;
+        $book->published_at = $request->published_at;
+
+        $book->tags()->sync($request->tags);
+
+        $book->save();
     }
 }
