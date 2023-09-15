@@ -14,7 +14,7 @@ class Wishlist extends Model
 
     protected $fillable = [
         'user_id',
-        'book_id',
+        'edition_id',
     ];
 
     public function user(): BelongsTo
