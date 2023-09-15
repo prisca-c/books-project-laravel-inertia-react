@@ -1,13 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EditionController;
-use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublisherController;
-use App\Http\Controllers\RatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,15 +29,12 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name(
-        'profile.edit',
-    );
-    Route::patch('/profile', [ProfileController::class, 'update'])->name(
-        'profile.update',
-    );
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
-        'profile.destroy',
-    );
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update',);
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy',);
 });
 
 Route::middleware(['auth', 'verified'])->group(
@@ -49,38 +42,31 @@ Route::middleware(['auth', 'verified'])->group(
         // -- Dashboard --
         Route::group(['prefix' => 'dashboard'], function () {
             // -- Index --
-            Route::get('/', [DashboardController::class, 'index'])->name(
-                'dashboard',
-            );
+            Route::get('/', [DashboardController::class, 'index'])
+                ->name('dashboard');
 
             // -- Books --
-            Route::namespace('Book')->group(
-                __DIR__ . '/Dashboard/BooksRoutes.php',
-            );
+            Route::namespace('Book')
+                ->group(__DIR__ . '/Dashboard/BooksRoutes.php');
 
             // -- Editions --
-            Route::namespace('Edition')->group(
-                __DIR__ . '/Dashboard/EditionsRoutes.php',
-            );
+            Route::namespace('Edition')
+                ->group(__DIR__ . '/Dashboard/EditionsRoutes.php');
 
             // -- Libraries --
-            Route::namespace('Library')->group(
-                __DIR__ . '/Dashboard/LibrariesRoutes.php',
-            );
+            Route::namespace('Library')
+                ->group(__DIR__ . '/Dashboard/LibrariesRoutes.php');
 
             // -- Ratings --
-            Route::namespace('Rating')->group(
-                __DIR__ . '/Dashboard/RatingsRoutes.php',
-            );
+            Route::namespace('Rating')
+                ->group(__DIR__ . '/Dashboard/RatingsRoutes.php');
         }),
     ],
 );
 
-Route::get('/authors', [AuthorController::class, 'index'])->name(
-    'authors.index',
-);
-Route::get('/publishers', [PublisherController::class, 'index'])->name(
-    'publishers.index',
-);
+Route::get('/authors', [AuthorController::class, 'index'])
+    ->name('authors.index');
+Route::get('/publishers', [PublisherController::class, 'index'])
+    ->name('publishers.index');
 
 require __DIR__ . '/auth.php';
