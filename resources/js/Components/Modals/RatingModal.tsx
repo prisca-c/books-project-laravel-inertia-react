@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { router } from '@inertiajs/react';
 import useFormRating from '@/Hooks/useFormRating';
 import StarRating from '@/Components/RateStars';
 import InputError from '@/Components/InputError';
 import FormButtons from '@/Components/FormButtons';
-import type { BookType } from '@/types/BookType';
-import { RatingType } from '@/types/RatingType';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import type { RatingType } from '@/types/RatingType';
 
 type RatingModalProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,13 +64,22 @@ const RatingModal = ({
         });
   };
 
+  const onDelete = () => {
+    router.delete(route('dashboard.ratings.destroy', userRating?.id), {
+      preserveScroll: true,
+    });
+  };
+
   const handleStarClick = (newRating: number) => {
     setRating(newRating);
   };
 
   return (
     <div className="fixed z-10 top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-      <form onSubmit={onSubmit} className={'relative bg-white p-4 rounded-lg'}>
+      <form
+        onSubmit={onSubmit}
+        className={'relative bg-white p-4 rounded-lg flex flex-col'}
+      >
         <div className="flex flex-col items-center gap-4 py-4 px-8">
           <p className="text-center text-2xl font-semibold">
             {exist ? 'Modify my rating' : 'Rate this book'}
@@ -92,6 +103,15 @@ const RatingModal = ({
           disabled={processing || data.book_id === 0}
           reset={reset}
         />
+        {exist && (
+          <button
+            className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-500 mt-4"
+            onClick={onDelete}
+            type={'button'}
+          >
+            <FontAwesomeIcon icon={faTrash} /> Delete my rating
+          </button>
+        )}
       </form>
     </div>
   );

@@ -97,8 +97,7 @@ const BookSingle = ({ auth, book }: BookSingleProps) => {
                   <p>
                     Book Rating:{' '}
                     <b>
-                      {' '}
-                      {book.rating ? book.rating.toFixed(1) : 0} / 5{' '}
+                      {book.rating === 0 ? 'Not rated yet' : book.rating + '/5'}{' '}
                       <FontAwesomeIcon
                         icon={faStar}
                         className={'text-yellow-500'}
