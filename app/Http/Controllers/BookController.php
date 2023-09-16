@@ -20,7 +20,7 @@ class BookController extends Controller
     {
         $books = Book::orderBy('id')->get();
 
-        $books->load('author', 'publisher', 'editions');
+        $books->load('author', 'publisher', 'editions', 'tags');
 
         return $books;
     }
@@ -33,6 +33,7 @@ class BookController extends Controller
             'author',
             'publisher',
             'editions',
+            'tags',
             'ratings' => fn($query) => $query->withUsername()
         ]);
 
@@ -97,8 +98,8 @@ class BookController extends Controller
         $book->synopsis = $request->synopsis;
         $book->published_at = $request->published_at;
 
-        $book->tags()->sync($request->tags);
-
         $book->save();
+
+        $book->tags()->sync($request->tags);
     }
 }

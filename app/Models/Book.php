@@ -32,7 +32,8 @@ class Book extends Model
 
     protected $withCount = [
         'editions',
-        'ratings'
+        'ratings',
+        'tags',
     ];
 
     protected $with =[
@@ -51,7 +52,7 @@ class Book extends Model
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, 'book_tag_relations');
+        return $this->belongsToMany(Tag::class, BookTagRelation::class);
     }
 
     public function ratings(): HasMany

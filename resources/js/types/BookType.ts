@@ -2,6 +2,7 @@ import type { AuthorType } from '@/types/AuthorType';
 import type { PublisherType } from '@/types/PublisherType';
 import type { EditionType } from '@/types/EditionType';
 import type { RatingType } from '@/types/RatingType';
+import type { TagType } from '@/types/TagType';
 
 export type BookType = {
   id: number;
@@ -18,4 +19,6 @@ export type BookType = {
   rating: number;
   editions_count: number;
   published_at: string;
+  tags?: TagType[];
+  tags_count: number;
 };
