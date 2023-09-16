@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -70,7 +71,11 @@ Route::middleware(['auth', 'verified'])->group(
 
 Route::get('/authors', [AuthorController::class, 'index'])
     ->name('authors.index');
+
 Route::get('/publishers', [PublisherController::class, 'index'])
     ->name('publishers.index');
+
+Route::get('/tags', [TagController::class, 'index'])
+    ->name('tags.index');
 
 require __DIR__ . '/auth.php';

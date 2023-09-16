@@ -7,8 +7,7 @@ import {
   faBook,
 } from '@fortawesome/free-solid-svg-icons';
 import { Book } from '@/Components/Books/Book';
-import { useState } from 'react';
-import CreateBookModal from '@/Components/Modals/CreateBookModal';
+import { useEffect, useState } from 'react';
 import EditBookModal from '@/Components/Modals/EditBookModal';
 import { Link, router } from '@inertiajs/react';
 import type { PageProps } from '@/types';
@@ -24,8 +23,7 @@ type BooksProps = {
 
 const Books = ({ auth, books }: BooksProps) => {
   const [turnEdition, setTurnEdition] = useState(false);
-  const [showCreateBookModal, setShowCreateBookModal] = useState(false);
-  const [showEditBookModal, setShowEditBookModal] = useState(false);
+  const [showBookModal, setShowBookModal] = useState(false);
   const [showAddToLibraryModal, setShowAddToLibraryModal] = useState(false);
   const [editedBook, setEditedBook] = useState<BookType | null>(null);
   const [addToLibraryBook, setAddToLibraryBook] = useState<BookType | null>(
@@ -33,6 +31,12 @@ const Books = ({ auth, books }: BooksProps) => {
   );
 
   const isAdmin = auth && auth.user.role_id === 3;
+
+  useEffect(() => {
+    if (!showBookModal) {
+      setEditedBook(null);
+    }
+  }, [showBookModal]);
 
   const booksFilter = () => {
     if (isAdmin) {
@@ -52,7 +56,7 @@ const Books = ({ auth, books }: BooksProps) => {
 
   const onEdit = (book: BookType | null) => {
     setEditedBook(book);
-    setShowEditBookModal(true);
+    setShowBookModal(true);
   };
 
   const onAddToLibrary = (book: BookType | null) => {
@@ -101,15 +105,12 @@ const Books = ({ auth, books }: BooksProps) => {
 
         {isAdmin && turnEdition && (
           <>
-            {showCreateBookModal && (
-              <CreateBookModal setShow={setShowCreateBookModal} />
-            )}
-            {showEditBookModal && (
-              <EditBookModal setShow={setShowEditBookModal} book={editedBook} />
+            {showBookModal && (
+              <EditBookModal setShow={setShowBookModal} book={editedBook} />
             )}
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full fixed bottom-4 right-4"
-              onClick={() => setShowCreateBookModal(true)}
+              onClick={() => setShowBookModal(true)}
             >
               <FontAwesomeIcon icon={faPlus} /> Add Book
             </button>

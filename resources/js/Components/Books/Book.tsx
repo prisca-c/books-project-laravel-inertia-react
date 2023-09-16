@@ -30,6 +30,25 @@ export const Book = ({ book }: { book: BookType }) => {
         <p className={'mt-3 text-start text-sm h-[100px] overflow-hidden'}>
           {toTruncate(book.synopsis, 180)}
         </p>
+
+        <div className={'flex flex-wrap gap-2 mt-2'}>
+          <p className={'text-sm text-gray-600'}>
+            Tags:{' '}
+            {book.tags?.map((tag) => (
+              <span
+                key={tag.id}
+                className={
+                  'bg-gray-200 px-2 py-1 rounded-full text-xs text-gray-600 mr-1'
+                }
+              >
+                {tag.name}
+              </span>
+            ))}
+            {book.tags_count === 0 && (
+              <span className={'text-xs text-gray-600'}>No tags</span>
+            )}
+          </p>
+        </div>
       </div>
     )
   );

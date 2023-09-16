@@ -7,3 +7,7 @@ export const getAuthors = async () => {
 export const getPublishers = async () => {
   return await axios.get(route('publishers.index'));
 };
+
+export const getTags = async () => {
+  return await axios.get(route('tags.index'));
+};

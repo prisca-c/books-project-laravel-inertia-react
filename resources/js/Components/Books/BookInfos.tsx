@@ -83,6 +83,23 @@ const BookInfos = ({ book }: BookInfosProps) => {
         </h3>
 
         <p className="mt-1 text-sm text-gray-500">
+          Tags:{' '}
+          {book.tags?.map((tag) => (
+            <span
+              key={tag.id}
+              className={
+                'bg-gray-200 px-2 py-1 rounded-full text-xs text-gray-600 mr-1'
+              }
+            >
+              {tag.name}
+            </span>
+          ))}
+          {book.tags_count === 0 && (
+            <span className={'text-xs text-gray-600'}>No tags</span>
+          )}
+        </p>
+
+        <p className="mt-1 text-sm text-gray-500">
           Author: <b>{book?.author?.name}</b>
         </p>
         <p className="mt-1 text-sm text-gray-500">
